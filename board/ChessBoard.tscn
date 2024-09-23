@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbxfcbs8na24l"]
+
+[ext_resource type="Texture2D" uid="uid://5orwytfh5q4w" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/board.png" id="1_2phx7"]
+[ext_resource type="Script" path="res://board/chess_board_grid_container.gd" id="3_nit3i"]
+
+[sub_resource type="GDScript" id="GDScript_ywiiy"]
+script/source = "extends Node2D
+
+const CHESS_TILE = preload(\"res://board/ChessTile.tscn\")
+const TILE_SIZE := 62
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	#for row in range(8):
+		#for col in range(8):
+			#var tile = CHESS_TILE.instantiate()
+			#tile.position = Vector2(col * TILE_SIZE, row * TILE_SIZE)
+			#add_child(tile)
+	pass
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[node name="ChessBoard" type="Node2D"]
+position = Vector2(150, 40)
+script = SubResource("GDScript_ywiiy")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(257, 259)
+scale = Vector2(2.85, 2.85)
+texture = ExtResource("1_2phx7")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(502, 502)
+offset_left = 6.0
+offset_top = 9.0
+offset_right = 508.0
+offset_bottom = 511.0
+columns = 8
+script = ExtResource("3_nit3i")
