@@ -22,7 +22,6 @@ gdscript/warnings/untyped_declaration=1
 
 window/size/viewport_width=800
 window/size/viewport_height=600
-window/stretch/mode="canvas_items"
 display_server/driver.linuxbsd="wayland"
 
 [rendering]
@@ -30,3 +29,4 @@ display_server/driver.linuxbsd="wayland"
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(1, 1, 1, 1)
