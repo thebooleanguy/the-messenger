@@ -1,14 +1,12 @@
 extends Node2D
 
-var piece = null
+@export var piece: Node = null
 @onready var color_rect := $Sprite2D/ColorRect
 @onready var color_rect_default_color = color_rect.color 
 
 
 func _ready() -> void:
 	pass
-
-
 
 func _process(delta: float) -> void:
 	pass
