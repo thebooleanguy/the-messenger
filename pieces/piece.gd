@@ -10,12 +10,11 @@ enum Team {
 @export var white_texture: Texture2D
 
 # Override this method
-func get_valid_moves(board: Array) -> Array:
+func get_valid_moves(_board: Array) -> Array:
 	return[]
 
 func set_team(team_color: Team) -> void:
 	team = team_color
-	var sprite = $Sprite2D
 	if team == Team.BLACK:
 		$Sprite2D.texture = black_texture
 	else:
@@ -24,5 +23,5 @@ func set_team(team_color: Team) -> void:
 func _ready() -> void:
 	pass 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
