@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://b3j57a84fwwy6"]
-
-[ext_resource type="Texture2D" uid="uid://cn0d4gekdwvn" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_pawn.png" id="1_8fdk2"]
-
-[node name="Pawn" type="Node2D"]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(2, 2)
-texture = ExtResource("1_8fdk2")

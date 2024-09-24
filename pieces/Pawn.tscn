@@ -1,0 +1,9 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3j57a84fwwy6"]
+
+[ext_resource type="PackedScene" uid="uid://bfwy1uucrr6it" path="res://pieces/Piece.tscn" id="1_i7uip"]
+[ext_resource type="Texture2D" uid="uid://cn0d4gekdwvn" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_pawn.png" id="1_in7o3"]
+[ext_resource type="Texture2D" uid="uid://c56bgs78tnqgj" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/white_pawn.png" id="3_xxde1"]
+
+[node name="Pawn" instance=ExtResource("1_i7uip")]
+black_texture = ExtResource("1_in7o3")
+white_texture = ExtResource("3_xxde1")

@@ -1,14 +1,14 @@
 extends Node2D
 
 const CHESS_TILE := preload("res://board/ChessTile.tscn")
-const BLACK_PAWN := preload("res://pieces/pawn.tscn")
+const PAWN := preload("res://pieces/Pawn.tscn")
 const TILE_SIZE := 63
 const CENTERED_TILE_OFFSET := Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
 var tile_grid :Array = []
 
 func _ready() -> void:
 	draw_board()
-	place_piece(BLACK_PAWN, Vector2(2,0))
+	place_piece(PAWN, Vector2(2,0), 0)
 	move_piece(Vector2(2,0), Vector2(2,1))
 	#print(tile_grid)
 
@@ -24,10 +24,11 @@ func draw_board() -> void:
 		tile_grid.append(row)
 
 
-func place_piece(piece_scene: PackedScene, pos: Vector2) -> void:
+func place_piece(piece_scene: PackedScene, pos: Vector2, team: int) -> void:
 	var tile = tile_grid[pos.y][pos.x]
 	var piece_instance := piece_scene.instantiate()
 	piece_instance.position = tile.position + CENTERED_TILE_OFFSET
+	piece_instance.set_team(team)
 	add_child(piece_instance)
 	tile.piece = piece_instance
 
@@ -41,6 +42,7 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 		piece.position = tile_to.position + CENTERED_TILE_OFFSET
 		tile_to.piece = piece
 		tile_from.piece = null
+
 
 func _process(delta: float) -> void:
 	pass
