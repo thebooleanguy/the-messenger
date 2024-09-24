@@ -19,6 +19,7 @@ offset_right = 32.0
 offset_bottom = 32.0
 color = Color(1, 1, 1, 0)
 
+[connection signal="gui_input" from="Sprite2D/ColorRect" to="." method="_on_color_rect_gui_input"]
 [connection signal="mouse_entered" from="Sprite2D/ColorRect" to="." method="_on_color_rect_mouse_entered"]
 [connection signal="mouse_entered" from="Sprite2D/ColorRect" to="Sprite2D/ColorRect" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Sprite2D/ColorRect" to="." method="_on_color_rect_mouse_exited"]
