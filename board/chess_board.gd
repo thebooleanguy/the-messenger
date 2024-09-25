@@ -1,7 +1,6 @@
 extends Node2D
 
 const CHESS_TILE: PackedScene = preload("res://board/ChessTile.tscn")
-const PAWN: PackedScene = preload("res://pieces/Pawn.tscn")
 const GRID_SIZE: int = 6
 const TILE_SIZE: float = 63
 const CENTERED_TILE_OFFSET := Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
@@ -11,13 +10,25 @@ var selected_piece: Node = null
 var selected_tile: Node = null
 var valid_move_tiles: Array = []
 
+# Pieces for debugging Purposes, remove later
+const PAWN: PackedScene = preload("res://pieces/Pawn.tscn")
+const ROOK: PackedScene = preload("res://pieces/Rook.tscn")
+const QUEEN: PackedScene = preload("res://pieces/Queen.tscn")
+const BISHOP: PackedScene = preload("res://pieces/Bishop.tscn")
+const KNIGHT: PackedScene = preload("res://pieces/Knight.tscn")
+
 func _ready() -> void:
 	# Center board on viewport
 	position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
 	position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
 	draw_board()
-	place_piece(PAWN, Vector2(2,0), 0)
+	
+	# For Debugging Purposes
+	place_piece(ROOK, Vector2(2,0), 0)
 	place_piece(PAWN, Vector2(3,2), 1)
+	place_piece(QUEEN, Vector2(4,4), 0)
+	place_piece(BISHOP, Vector2(1,4), 1)
+	place_piece(KNIGHT, Vector2(4,5), 0)
 	#move_piece(Vector2(2,0), Vector2(2,1))
 	#print(has_piece_at(Vector2(2,11)))
 	#print(has_enemy_piece_at(Vector2(2,1), 1))

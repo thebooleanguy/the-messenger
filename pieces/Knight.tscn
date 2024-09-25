@@ -1,0 +1,11 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkqf6mcys0ryt"]
+
+[ext_resource type="PackedScene" uid="uid://bfwy1uucrr6it" path="res://pieces/Piece.tscn" id="1_hmaao"]
+[ext_resource type="Script" path="res://pieces/knight.gd" id="2_bkp6j"]
+[ext_resource type="Texture2D" uid="uid://dpyl6w2jclnuh" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_knight.png" id="3_8a3ts"]
+[ext_resource type="Texture2D" uid="uid://h82hpvv6yu1q" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/white_knight.png" id="4_hqclq"]
+
+[node name="Knight" instance=ExtResource("1_hmaao")]
+script = ExtResource("2_bkp6j")
+black_texture = ExtResource("3_8a3ts")
+white_texture = ExtResource("4_hqclq")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbh6kfcxx0w4c"]
+
+[ext_resource type="PackedScene" uid="uid://bfwy1uucrr6it" path="res://pieces/Piece.tscn" id="1_i4t4a"]
+[ext_resource type="Script" path="res://pieces/queen.gd" id="2_560oj"]
+[ext_resource type="Texture2D" uid="uid://sg0vlr8g5wbi" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_queen.png" id="3_fvyiy"]
+[ext_resource type="Texture2D" uid="uid://b141sbd4g8bq4" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/white_queen.png" id="4_1rwl3"]
+
+[node name="Queen" instance=ExtResource("1_i4t4a")]
+script = ExtResource("2_560oj")
+black_texture = ExtResource("3_fvyiy")
+white_texture = ExtResource("4_1rwl3")

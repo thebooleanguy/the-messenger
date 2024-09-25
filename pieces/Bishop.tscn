@@ -1,0 +1,11 @@
+[gd_scene load_steps=5 format=3 uid="uid://dohjwx1f28x16"]
+
+[ext_resource type="PackedScene" uid="uid://bfwy1uucrr6it" path="res://pieces/Piece.tscn" id="1_xx2wm"]
+[ext_resource type="Script" path="res://pieces/bishop.gd" id="2_aghnc"]
+[ext_resource type="Texture2D" uid="uid://dmpywprl516t1" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_bishop.png" id="3_jge26"]
+[ext_resource type="Texture2D" uid="uid://bi2bnf0liocxq" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/white_bishop.png" id="4_7obk3"]
+
+[node name="Bishop" instance=ExtResource("1_xx2wm")]
+script = ExtResource("2_aghnc")
+black_texture = ExtResource("3_jge26")
+white_texture = ExtResource("4_7obk3")

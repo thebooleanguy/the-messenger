@@ -21,6 +21,7 @@ func get_valid_moves() -> Array:
 	if board.is_within_bounds(forward_one) and not board.has_piece_at(forward_one):
 		valid_moves.append(forward_one)
 		
+		# Removed for now, will check later how it suits gameplay
 		# Check for double-step if on the starting row on large grids
 		#if board.GRID_SIZE > 5:
 			#var start_row: int = board.GRID_SIZE - 2 if team == Team.WHITE else 1
