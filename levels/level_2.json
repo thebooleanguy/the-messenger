@@ -1,5 +1,5 @@
 {
-  "grid_size": 5,
+  "grid_size": 4,
   "pieces": [
 	{"type": "Pawn", "position": [0, 1], "team": 0},
 	{"type": "Pawn", "position": [1, 2], "team": 0},
