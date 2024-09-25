@@ -1,0 +1,11 @@
+[gd_scene load_steps=5 format=3 uid="uid://btplo3j7h87sb"]
+
+[ext_resource type="PackedScene" uid="uid://bfwy1uucrr6it" path="res://pieces/Piece.tscn" id="1_s1ej6"]
+[ext_resource type="Script" path="res://pieces/rook.gd" id="2_6au42"]
+[ext_resource type="Texture2D" uid="uid://c467b88n8yc7n" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_rook.png" id="3_yjt3s"]
+[ext_resource type="Texture2D" uid="uid://f3ltsu7qk70p" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/white_rook.png" id="4_7jmmw"]
+
+[node name="Rook" instance=ExtResource("1_s1ej6")]
+script = ExtResource("2_6au42")
+black_texture = ExtResource("3_yjt3s")
+white_texture = ExtResource("4_7jmmw")

@@ -2,13 +2,14 @@ extends Node2D
 
 const CHESS_TILE: PackedScene = preload("res://board/ChessTile.tscn")
 const PAWN: PackedScene = preload("res://pieces/Pawn.tscn")
-const GRID_SIZE: int = 8
+const GRID_SIZE: int = 6
 const TILE_SIZE: float = 63
 const CENTERED_TILE_OFFSET := Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
 const CHESSBOARD_SIZE := TILE_SIZE * GRID_SIZE
 var tile_grid: Array = []
 var selected_piece: Node = null
 var selected_tile: Node = null
+var valid_move_tiles: Array = []
 
 func _ready() -> void:
 	# Center board on viewport
@@ -16,7 +17,8 @@ func _ready() -> void:
 	position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
 	draw_board()
 	place_piece(PAWN, Vector2(2,0), 0)
-	move_piece(Vector2(2,0), Vector2(2,1))
+	place_piece(PAWN, Vector2(3,2), 1)
+	#move_piece(Vector2(2,0), Vector2(2,1))
 	#print(has_piece_at(Vector2(2,11)))
 	#print(has_enemy_piece_at(Vector2(2,1), 1))
 	#print(tile_grid)
@@ -37,11 +39,13 @@ func draw_board() -> void:
 
 func place_piece(piece_scene: PackedScene, pos: Vector2, team: int) -> void:
 	var tile: Node = tile_grid[pos.y][pos.x]
-	var piece_instance := piece_scene.instantiate()
-	piece_instance.position = tile.position + CENTERED_TILE_OFFSET
-	piece_instance.set_team(team)
-	add_child(piece_instance)
-	tile.piece = piece_instance
+	if !tile.piece:
+		var piece_instance := piece_scene.instantiate()
+		piece_instance.position = tile.position + CENTERED_TILE_OFFSET
+		piece_instance.set_team(team)
+		piece_instance.grid_position = tile.grid_position
+		add_child(piece_instance)
+		tile.piece = piece_instance
 
 
 func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
@@ -49,28 +53,59 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 	var tile_to: Node = tile_grid[new_pos.y][new_pos.x] 
 	var piece: Node = tile_from.piece
 	if piece:
+		# Capture piece
+		if tile_to.piece:
+			tile_to.piece.queue_free()
+		# Move piece
 		piece.position = tile_to.position + CENTERED_TILE_OFFSET
 		tile_to.piece = piece
+		piece.grid_position = tile_to.grid_position
 		tile_from.piece = null
 
 
 func _on_tile_clicked(grid_pos: Vector2) -> void:
 	var clicked_tile: Node = tile_grid[grid_pos.y][grid_pos.x]
-	# If tile already selected
+	
+	# If no piece is currently selected
 	if selected_piece == null:
 		if clicked_tile.piece != null:
 			selected_piece = clicked_tile.piece
 			selected_tile = clicked_tile
+			
+			# Highlight the selected tile
 			selected_tile.color_rect.color = Color(0.5, 0.5, 0.5, 0.8) 
 			selected_tile.is_selected = true
-	# If tile already selected
+			
+			# Get valid moves for the selected piece
+			valid_move_tiles = selected_piece.get_valid_moves()
+			#print(valid_move_tiles)
+			
+			# Highlight all valid move tiles
+			for move: Vector2 in valid_move_tiles:
+				var tile: Node = tile_grid[move.y][move.x]
+				tile.color_rect.color = Color(0.5, 0.5, 0.5, 0.5)
+				tile.is_selected = true
+	
+	# If a piece is already selected
 	else:
 		if clicked_tile != selected_tile:
-			move_piece(selected_tile.grid_position, grid_pos)
+			# Check if the clicked tile is a valid move
+			if grid_pos in valid_move_tiles:
+				move_piece(selected_tile.grid_position, grid_pos)
+				
+			# Unhighlight the selected tile and valid move tiles
 			selected_tile.color_rect.color = selected_tile.color_rect_default_color
 			selected_tile.is_selected = false
+			
+			for move: Vector2 in valid_move_tiles:
+				var tile: Node = tile_grid[move.y][move.x]
+				tile.color_rect.color = tile.color_rect_default_color
+				tile.is_selected = false
+			
+			# Reset selection
 			selected_piece = null
 			selected_tile = null
+			valid_move_tiles = []
 
 
 func has_piece_at(pos: Vector2) -> bool:

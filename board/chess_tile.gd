@@ -1,10 +1,10 @@
 extends Node2D
 
 @export var piece: Node = null
-@onready var color_rect := $Sprite2D/ColorRect
-@onready var color_rect_default_color: Color = color_rect.color 
 var grid_position :Vector2 = Vector2.ZERO
-var is_selected: bool = false 
+var is_selected: bool = false
+@onready var color_rect := $Sprite2D/ColorRect
+@onready var color_rect_default_color: Color = color_rect.color  
 
 signal tile_clicked(grid_position: Vector2)
 

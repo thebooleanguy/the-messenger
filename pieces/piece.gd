@@ -8,9 +8,12 @@ enum Team {
 @export var team: Team
 @export var black_texture: Texture2D
 @export var white_texture: Texture2D
+@onready var board: Node = get_parent();
+var grid_position :Vector2 = Vector2.ZERO
 
 # Override this method
-func get_valid_moves(_board: Array) -> Array:
+func get_valid_moves() -> Array:
+	print("Not Overridden")
 	return[]
 
 func set_team(team_color: Team) -> void:
