@@ -3,7 +3,7 @@ extends Node2D
 class_name ChessBoard
 
 const CHESS_TILE: PackedScene = preload("res://board/ChessTile.tscn")
-const GRID_SIZE: int = 6
+const GRID_SIZE: int = 4
 const TILE_SIZE: float = 63
 const CENTERED_TILE_OFFSET := Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
 const CHESSBOARD_SIZE := TILE_SIZE * GRID_SIZE
@@ -29,12 +29,13 @@ func _ready() -> void:
 	draw_board()
 	
 	# For Debugging Purposes
-	place_piece(ROOK, Vector2(2,0), 0)
-	place_piece(PAWN, Vector2(3,2), 1)
-	place_piece(PAWN, Vector2(3,3), 1)
-	place_piece(QUEEN, Vector2(4,4), 0)
-	place_piece(BISHOP, Vector2(1,4), 1)
-	place_piece(KNIGHT, Vector2(4,5), 0)
+	#place_piece(ROOK, Vector2(2,0), 0)
+	place_piece(PAWN, Vector2(0,1), 0)
+	place_piece(PAWN, Vector2(1,0), 0)
+	place_piece(PAWN, Vector2(2,3), 1)
+	#place_piece(QUEEN, Vector2(4,4), 0)
+	#place_piece(BISHOP, Vector2(1,4), 1)
+	#place_piece(KNIGHT, Vector2(4,5), 0)
 	#move_piece(Vector2(2,0), Vector2(2,1))
 	#print(has_piece_at(Vector2(2,11)))
 	#print(has_enemy_piece_at(Vector2(2,1), 1))
@@ -163,12 +164,23 @@ func ai_move_black_piece() -> void:
 		# Select a random black piece
 		var random_piece: Node = black_pieces[randi() % black_pieces.size()]
 		var valid_moves: Array = random_piece.get_valid_moves()
-		
-		# If there are valid moves, randomly pick one and move the piece
-		if valid_moves.size() > 0:
+
+		# Collect possible captures
+		var capture_moves: Array = []
+		for move in valid_moves:
+			if has_enemy_piece_at(move, random_piece.team):
+				capture_moves.append(move)
+
+		if capture_moves.size() > 0:
+			# Prioritize capturing a piece
+			var capture_move: Vector2 = capture_moves[randi() % capture_moves.size()]
+			move_piece(random_piece.grid_position, capture_move)
+		elif valid_moves.size() > 0:
+			# If no capture moves, select a random valid move
 			var random_move: Vector2 = valid_moves[randi() % valid_moves.size()]
 			move_piece(random_piece.grid_position, random_move)
-			turn += 1
+
+		turn += 1
 
 
 
