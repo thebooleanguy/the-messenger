@@ -22,12 +22,12 @@ func get_valid_moves() -> Array:
 		valid_moves.append(forward_one)
 		
 		# Check for double-step if on the starting row on large grids
-		if board.GRID_SIZE > 5:
-			var start_row: int = board.GRID_SIZE - 2 if team == Team.WHITE else 1
-			if current_pos.y == start_row:
-				var forward_two := current_pos + Vector2(0, forward_direction * 2)
-				if board.is_within_bounds(forward_two) and not board.has_piece_at(forward_two):
-					valid_moves.append(forward_two)
+		#if board.GRID_SIZE > 5:
+			#var start_row: int = board.GRID_SIZE - 2 if team == Team.WHITE else 1
+			#if current_pos.y == start_row:
+				#var forward_two := current_pos + Vector2(0, forward_direction * 2)
+				#if board.is_within_bounds(forward_two) and not board.has_piece_at(forward_two):
+					#valid_moves.append(forward_two)
 	
 	# Check diagonal captures
 	var diagonal_left := current_pos + Vector2(-1, forward_direction)
