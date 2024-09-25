@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name ChessBoard
+
 const CHESS_TILE: PackedScene = preload("res://board/ChessTile.tscn")
 const GRID_SIZE: int = 6
 const TILE_SIZE: float = 63
@@ -10,6 +12,8 @@ var selected_piece: Node = null
 var selected_tile: Node = null
 var valid_move_tiles: Array = []
 var turn: int = 1
+var player_move_in_progress: bool = 0
+var last_moved_piece: Node = null
 
 # Pieces for debugging Purposes, remove later
 const PAWN: PackedScene = preload("res://pieces/Pawn.tscn")
@@ -27,6 +31,7 @@ func _ready() -> void:
 	# For Debugging Purposes
 	place_piece(ROOK, Vector2(2,0), 0)
 	place_piece(PAWN, Vector2(3,2), 1)
+	place_piece(PAWN, Vector2(3,3), 1)
 	place_piece(QUEEN, Vector2(4,4), 0)
 	place_piece(BISHOP, Vector2(1,4), 1)
 	place_piece(KNIGHT, Vector2(4,5), 0)
@@ -34,6 +39,12 @@ func _ready() -> void:
 	#print(has_piece_at(Vector2(2,11)))
 	#print(has_enemy_piece_at(Vector2(2,1), 1))
 	#print(tile_grid)
+
+func _process(_delta: float) -> void:
+	# For debugging purposes
+	#if turn == 0:
+		#ai_move_black_piece()
+	pass
 
 func draw_board() -> void:
 	for y in range(GRID_SIZE):
@@ -80,6 +91,8 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 	else:
 		print("Out of bounds")
 
+
+### Player Controller ###
 func _on_tile_clicked(grid_pos: Vector2) -> void:
 	var clicked_tile: Node = tile_grid[grid_pos.y][grid_pos.x]
 	
@@ -102,6 +115,7 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 				var tile: Node = tile_grid[move.y][move.x]
 				tile.color_rect.color = Color(0.5, 0.5, 0.5, 0.5)
 				tile.is_selected = true
+				player_move_in_progress = true
 	
 	# If a piece is already selected
 	else:
@@ -109,7 +123,12 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 			# Check if the clicked tile is a valid move
 			if grid_pos in valid_move_tiles:
 				move_piece(selected_tile.grid_position, grid_pos)
+				last_moved_piece = selected_piece
 				turn -= 1
+				if (grid_pos.y == 0) and (selected_piece is Pawn) and (selected_piece.team == 1):
+					print("Player Won")
+				else:
+					ai_move_black_piece()
 				
 		# Unhighlight the selected tile and valid move tiles
 		selected_tile.color_rect.color = selected_tile.color_rect_default_color
@@ -118,6 +137,7 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 			var tile: Node = tile_grid[move.y][move.x]
 			tile.color_rect.color = tile.color_rect_default_color
 			tile.is_selected = false
+			player_move_in_progress = false
 		
 		# Reset selection
 		selected_piece = null
@@ -125,6 +145,34 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 		valid_move_tiles = []
 		
 
+
+### AI Controller ###
+
+# Random moves for now
+func ai_move_black_piece() -> void:
+	var black_pieces := []
+	
+	# Collect all black pieces
+	for y in range(GRID_SIZE):
+		for x in range(GRID_SIZE):
+			var tile: Node = tile_grid[y][x]
+			if tile.piece and tile.piece.team == 0:  # Black piece
+				black_pieces.append(tile.piece)
+	
+	if black_pieces.size() > 0:
+		# Select a random black piece
+		var random_piece: Node = black_pieces[randi() % black_pieces.size()]
+		var valid_moves: Array = random_piece.get_valid_moves()
+		
+		# If there are valid moves, randomly pick one and move the piece
+		if valid_moves.size() > 0:
+			var random_move: Vector2 = valid_moves[randi() % valid_moves.size()]
+			move_piece(random_piece.grid_position, random_move)
+			turn += 1
+
+
+
+### Helper Functions ###
 
 func has_piece_at(pos: Vector2) -> bool:
 	if not is_within_bounds(pos):
@@ -140,6 +188,3 @@ func has_enemy_piece_at(pos: Vector2, current_team: int) -> bool:
 	
 func is_within_bounds(pos: Vector2) -> bool:
 	return pos.x >= 0 and pos.x < GRID_SIZE and pos.y >= 0 and pos.y < GRID_SIZE
-
-func _process(_delta: float) -> void:
-	pass

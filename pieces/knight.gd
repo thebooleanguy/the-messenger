@@ -1,5 +1,7 @@
 extends "res://pieces/piece.gd"
 
+class_name Knight
+
 func get_valid_moves() -> Array:
 	var valid_moves: Array = []
 	var current_pos := grid_position

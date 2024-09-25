@@ -1,5 +1,7 @@
 extends "res://pieces/piece.gd"
 
+class_name Pawn
+
 func _ready() -> void:
 	pass 
 
