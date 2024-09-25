@@ -1,0 +1,7 @@
+{
+  "grid_size": 4,
+  "pieces": [
+	{"type": "Pawn", "position": [0, 1], "team": 1},
+	{"type": "Rook", "position": [1, 1], "team": 0}
+  ]
+}
