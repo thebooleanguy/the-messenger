@@ -9,6 +9,7 @@ var tile_grid: Array = []
 var selected_piece: Node = null
 var selected_tile: Node = null
 var valid_move_tiles: Array = []
+var turn: int = 1
 
 # Pieces for debugging Purposes, remove later
 const PAWN: PackedScene = preload("res://pieces/Pawn.tscn")
@@ -49,30 +50,35 @@ func draw_board() -> void:
 
 
 func place_piece(piece_scene: PackedScene, pos: Vector2, team: int) -> void:
-	var tile: Node = tile_grid[pos.y][pos.x]
-	if !tile.piece:
-		var piece_instance := piece_scene.instantiate()
-		piece_instance.position = tile.position + CENTERED_TILE_OFFSET
-		piece_instance.set_team(team)
-		piece_instance.grid_position = tile.grid_position
-		add_child(piece_instance)
-		tile.piece = piece_instance
+	if is_within_bounds(pos):
+		var tile: Node = tile_grid[pos.y][pos.x]
+		if !tile.piece:
+			var piece_instance := piece_scene.instantiate()
+			piece_instance.position = tile.position + CENTERED_TILE_OFFSET
+			piece_instance.set_team(team)
+			piece_instance.grid_position = tile.grid_position
+			add_child(piece_instance)
+			tile.piece = piece_instance
+	else:
+		print("Out of bounds")
 
 
 func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
-	var tile_from: Node = tile_grid[curr_pos.y][curr_pos.x] 
-	var tile_to: Node = tile_grid[new_pos.y][new_pos.x] 
-	var piece: Node = tile_from.piece
-	if piece:
-		# Capture piece
-		if tile_to.piece:
-			tile_to.piece.queue_free()
-		# Move piece
-		piece.position = tile_to.position + CENTERED_TILE_OFFSET
-		tile_to.piece = piece
-		piece.grid_position = tile_to.grid_position
-		tile_from.piece = null
-
+	if is_within_bounds(curr_pos) and is_within_bounds(new_pos):
+		var tile_from: Node = tile_grid[curr_pos.y][curr_pos.x] 
+		var tile_to: Node = tile_grid[new_pos.y][new_pos.x] 
+		var piece: Node = tile_from.piece
+		if piece:
+			# Capture piece
+			if tile_to.piece:
+				tile_to.piece.queue_free()
+			# Move piece
+			piece.position = tile_to.position + CENTERED_TILE_OFFSET
+			tile_to.piece = piece
+			piece.grid_position = tile_to.grid_position
+			tile_from.piece = null
+	else:
+		print("Out of bounds")
 
 func _on_tile_clicked(grid_pos: Vector2) -> void:
 	var clicked_tile: Node = tile_grid[grid_pos.y][grid_pos.x]
@@ -103,20 +109,21 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 			# Check if the clicked tile is a valid move
 			if grid_pos in valid_move_tiles:
 				move_piece(selected_tile.grid_position, grid_pos)
+				turn -= 1
 				
-			# Unhighlight the selected tile and valid move tiles
-			selected_tile.color_rect.color = selected_tile.color_rect_default_color
-			selected_tile.is_selected = false
-			
-			for move: Vector2 in valid_move_tiles:
-				var tile: Node = tile_grid[move.y][move.x]
-				tile.color_rect.color = tile.color_rect_default_color
-				tile.is_selected = false
-			
-			# Reset selection
-			selected_piece = null
-			selected_tile = null
-			valid_move_tiles = []
+		# Unhighlight the selected tile and valid move tiles
+		selected_tile.color_rect.color = selected_tile.color_rect_default_color
+		selected_tile.is_selected = false
+		for move: Vector2 in valid_move_tiles:
+			var tile: Node = tile_grid[move.y][move.x]
+			tile.color_rect.color = tile.color_rect_default_color
+			tile.is_selected = false
+		
+		# Reset selection
+		selected_piece = null
+		selected_tile = null
+		valid_move_tiles = []
+		
 
 
 func has_piece_at(pos: Vector2) -> bool:

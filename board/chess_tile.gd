@@ -3,8 +3,9 @@ extends Node2D
 @export var piece: Node = null
 var grid_position :Vector2 = Vector2.ZERO
 var is_selected: bool = false
+@onready var board: Node = get_parent()  
 @onready var color_rect := $Sprite2D/ColorRect
-@onready var color_rect_default_color: Color = color_rect.color  
+@onready var color_rect_default_color: Color = color_rect.color
 
 signal tile_clicked(grid_position: Vector2)
 
@@ -27,7 +28,10 @@ func _on_color_rect_mouse_exited() -> void:
 
 
 func _on_color_rect_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("select"):
+	if event.is_action_pressed("select") and board.turn == 1 and (!piece or piece.team == 1):
 		tile_clicked.emit(grid_position)
 		if not is_selected:
 			color_rect.color = Color(0.5, 0.5, 0.5, 0.8)
+	#elif event.is_action_pressed("deselect"):
+		#color_rect.color = color_rect_default_color
+		#is_selected = false
