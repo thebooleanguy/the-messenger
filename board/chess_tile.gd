@@ -19,7 +19,7 @@ func _process(_delta: float) -> void:
 func _on_color_rect_mouse_entered() -> void:
 	if not is_selected:
 		color_rect.color = Color(0.8, 0.8, 0.8, 0.5)
-		print(piece, ' ', grid_position)
+		#print(piece, ' ', grid_position)
 
 
 func _on_color_rect_mouse_exited() -> void:
