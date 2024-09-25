@@ -14,8 +14,8 @@ var valid_move_tiles: Array = []
 var turn: int = 1
 var player_move_in_progress: bool = false
 
-var current_level: int = 1
-var max_levels: int = 3
+var current_level: int = 4
+var max_levels: int = 4
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
 
