@@ -37,7 +37,7 @@ func _ready() -> void:
 	load_current_level()
 
 func load_current_level() -> void:
-	var level_data = level_manager.load_level("level_" + str(current_level))  # Load the current level
+	var level_data := level_manager.load_level("level_" + str(current_level))  # Load the current level
 	if level_data.size() > 0:
 		setup_level(level_data)
 	else:
@@ -69,8 +69,8 @@ func _process(_delta: float) -> void:
 
 func draw_board() -> void:
 	# Clear existing tiles from tile_grid if it already exists
-	for row in tile_grid:
-		for tile in row:
+	for row: Array in tile_grid:
+		for tile: Node in row:
 			tile.queue_free()  # Remove existing tiles
 	tile_grid.clear()  # Clear the grid array
 	
@@ -130,16 +130,16 @@ func setup_level(level_data: Dictionary) -> void:
 		print("Grid size not specified in level data.")
 
 	# Place pieces based on level_data
-	for piece_data in level_data["pieces"]:
+	for piece_data: Dictionary in level_data["pieces"]:
 		var piece_type: String = piece_data["type"]
 		if piece_type in piece_scene_map:
 			var piece_scene: PackedScene = piece_scene_map[piece_type]
 			
 			# Convert the position from Array to Vector2
 			var position_array: Array = piece_data["position"]
-			var position: Vector2 = Vector2(position_array[0], position_array[1])
+			var pos: Vector2 = Vector2(position_array[0], position_array[1])
 			
-			place_piece(piece_scene, position, piece_data["team"])
+			place_piece(piece_scene, pos, piece_data["team"])
 		else:
 			print("Unknown piece type: " + piece_type)
 
@@ -234,10 +234,10 @@ func ai_move_black_piece() -> void:
 	if black_pieces.size() > 0:
 		# Collect all pieces that can capture
 		var pieces_with_captures := []
-		for piece in black_pieces:
+		for piece: Node in black_pieces:
 			var valid_moves: Array = piece.get_valid_moves()
 			var capture_moves: Array = []
-			for move in valid_moves:
+			for move: Vector2 in valid_moves:
 				if has_enemy_piece_at(move, piece.team):
 					capture_moves.append(move)
 
@@ -250,7 +250,7 @@ func ai_move_black_piece() -> void:
 			var valid_moves: Array = random_piece.get_valid_moves()
 			# Collect possible captures again since we have a new piece
 			var capture_moves: Array = []
-			for move in valid_moves:
+			for move: Vector2 in valid_moves:
 				if has_enemy_piece_at(move, random_piece.team):
 					capture_moves.append(move)
 
@@ -260,19 +260,19 @@ func ai_move_black_piece() -> void:
 				move_piece(random_piece.grid_position, capture_move)
 			else:
 				# No captures, so prioritize moves closer to white pieces
-				move_closer_to_white(random_piece, black_pieces)
+				move_closer_to_white(random_piece)
 		else:
 			# No captures, so prioritize moves closer to white pieces
 			var random_piece: Node = black_pieces[randi() % black_pieces.size()]
-			move_closer_to_white(random_piece, black_pieces)
+			move_closer_to_white(random_piece)
 
 
 # Helper function to move closer to white pieces
-func move_closer_to_white(random_piece: Node, black_pieces: Array) -> void:
+func move_closer_to_white(random_piece: Node) -> void:
 	var valid_moves: Array = random_piece.get_valid_moves()
 	if valid_moves.size() > 0:
 		var prioritized_moves := []
-		for move in valid_moves:
+		for move: Vector2 in valid_moves:
 			if has_piece_at(move):
 				# Check if the piece is white
 				var target_piece: Node = tile_grid[move.y][move.x].piece
@@ -284,7 +284,7 @@ func move_closer_to_white(random_piece: Node, black_pieces: Array) -> void:
 			var closest_move: Vector2 = prioritized_moves[0]
 			var closest_distance: float = closest_move.distance_to(random_piece.grid_position)
 
-			for move in prioritized_moves:
+			for move: Vector2 in prioritized_moves:
 				var distance: float = move.distance_to(random_piece.grid_position)
 				if distance < closest_distance:
 					closest_distance = distance
