@@ -1,12 +1,37 @@
-[gd_scene load_steps=4 format=3 uid="uid://detqrw4pp5y67"]
+[gd_scene load_steps=7 format=3 uid="uid://detqrw4pp5y67"]
 
+[ext_resource type="Script" path="res://ui/ui.gd" id="1_6n74f"]
 [ext_resource type="FontFile" uid="uid://de2xva1tsv2cl" path="res://assets/fonts/VT323/VT323-Regular.ttf" id="1_jjbl0"]
 [ext_resource type="Texture2D" uid="uid://cn0d4gekdwvn" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_pawn.png" id="2_ftq3s"]
 [ext_resource type="Texture2D" uid="uid://dmpywprl516t1" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_bishop.png" id="3_pk3oe"]
+[ext_resource type="PackedScene" uid="uid://d1m1bgf6din3i" path="res://ui/UISound.tscn" id="5_u0pcq"]
+[ext_resource type="AudioStream" uid="uid://cx3ucvy21a24c" path="res://assets/music/TownTheme.mp3" id="6_xj05t"]
 
 [node name="GameOver" type="Node2D"]
+script = ExtResource("1_6n74f")
+metadata/_edit_group_ = true
 
-[node name="Title" type="Label" parent="."]
+[node name="UISound" parent="." instance=ExtResource("5_u0pcq")]
+
+[node name="GameOverSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_xj05t")
+autoplay = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainerTop" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -384.0
+offset_right = -384.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="Top" type="Node2D" parent="CanvasLayer/HBoxContainerTop"]
+metadata/_edit_group_ = true
+
+[node name="Title" type="Label" parent="CanvasLayer/HBoxContainerTop/Top"]
 offset_left = 272.0
 offset_top = 40.0
 offset_right = 438.0
@@ -17,7 +42,7 @@ theme_override_font_sizes/font_size = 32
 text = "Game Over"
 horizontal_alignment = 1
 
-[node name="SubTitle" type="Label" parent="."]
+[node name="SubTitle" type="Label" parent="CanvasLayer/HBoxContainerTop/Top"]
 offset_left = 248.0
 offset_top = 80.0
 offset_right = 456.0
@@ -28,10 +53,34 @@ theme_override_font_sizes/font_size = 20
 text = "You won"
 horizontal_alignment = 1
 
-[node name="SubTitle2" type="Label" parent="."]
+[node name="MenuButton" type="Button" parent="CanvasLayer/HBoxContainerTop/Top"]
+offset_left = 680.0
+offset_top = 24.0
+offset_right = 722.0
+offset_bottom = 49.0
+theme_override_fonts/font = ExtResource("1_jjbl0")
+text = "Menu"
+
+[node name="HBoxContainerCenter" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -376.0
+offset_top = -200.0
+offset_right = -336.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Center" type="Node2D" parent="CanvasLayer/HBoxContainerCenter"]
+
+[node name="SubTitleBottom" type="Label" parent="CanvasLayer/HBoxContainerCenter/Center"]
 offset_left = 152.0
 offset_top = 328.0
-offset_right = 584.0
+offset_right = 592.0
 offset_bottom = 352.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_jjbl0")
@@ -39,35 +88,29 @@ theme_override_font_sizes/font_size = 20
 text = "The townspeople can evacuate safely due to your efforts."
 horizontal_alignment = 1
 
-[node name="Pawn" type="Sprite2D" parent="."]
+[node name="Pawn" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
 position = Vector2(352, 224)
 scale = Vector2(8, 8)
 texture = ExtResource("2_ftq3s")
 
-[node name="Pawn2" type="Sprite2D" parent="."]
+[node name="Pawn2" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
 position = Vector2(456, 184)
 scale = Vector2(6, 6)
 texture = ExtResource("2_ftq3s")
 
-[node name="Pawn5" type="Sprite2D" parent="."]
+[node name="Pawn5" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
 position = Vector2(264, 184)
 scale = Vector2(5, 5)
 texture = ExtResource("2_ftq3s")
 
-[node name="Bishop" type="Sprite2D" parent="."]
+[node name="Bishop" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
 position = Vector2(120, 208)
 scale = Vector2(5, 5)
 texture = ExtResource("3_pk3oe")
 
-[node name="Bishop2" type="Sprite2D" parent="."]
+[node name="Bishop2" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
 position = Vector2(608, 216)
 scale = Vector2(5, 5)
 texture = ExtResource("3_pk3oe")
 
-[node name="MenuButton" type="Button" parent="."]
-offset_left = 680.0
-offset_top = 24.0
-offset_right = 722.0
-offset_bottom = 49.0
-theme_override_fonts/font = ExtResource("1_jjbl0")
-text = "Menu"
+[connection signal="pressed" from="CanvasLayer/HBoxContainerTop/Top/MenuButton" to="." method="_on_menu_button_pressed"]

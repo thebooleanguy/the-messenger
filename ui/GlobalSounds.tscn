@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwqf7hdoljpp4"]
+
+[ext_resource type="PackedScene" uid="uid://d1m1bgf6din3i" path="res://ui/UISound.tscn" id="2_ti1c1"]
+[ext_resource type="PackedScene" uid="uid://bmbn2g443npxu" path="res://ui/TitleMusic.tscn" id="3_q584n"]
+
+[sub_resource type="GDScript" id="GDScript_muk85"]
+script/source = "extends Node
+
+@onready var ui_sound := $UISound
+@onready var title_music := $TitleMusic
+"
+
+[node name="GlobalSounds" type="Node"]
+script = SubResource("GDScript_muk85")
+
+[node name="UISound" parent="." instance=ExtResource("2_ti1c1")]
+
+[node name="TitleMusic" parent="." instance=ExtResource("3_q584n")]

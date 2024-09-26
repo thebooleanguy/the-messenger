@@ -1,12 +1,34 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwuec4a0pnty7"]
+[gd_scene load_steps=5 format=3 uid="uid://bwuec4a0pnty7"]
 
+[ext_resource type="Script" path="res://ui/ui.gd" id="1_nl8kn"]
 [ext_resource type="FontFile" uid="uid://de2xva1tsv2cl" path="res://assets/fonts/VT323/VT323-Regular.ttf" id="1_wm42f"]
 [ext_resource type="Texture2D" uid="uid://sg0vlr8g5wbi" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_queen.png" id="2_6rbl1"]
+[ext_resource type="PackedScene" uid="uid://d1m1bgf6din3i" path="res://ui/UISound.tscn" id="4_t806n"]
 
 [node name="Instructions" type="Node2D"]
 position = Vector2(64, 23)
+script = ExtResource("1_nl8kn")
+metadata/_edit_group_ = true
 
-[node name="Title" type="Label" parent="."]
+[node name="UISound" parent="." instance=ExtResource("4_t806n")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainerTopHalf" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -392.0
+offset_right = -352.0
+offset_bottom = 40.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="TopHalf" type="Node2D" parent="CanvasLayer/HBoxContainerTopHalf"]
+position = Vector2(64, 23)
+metadata/_edit_group_ = true
+
+[node name="Title" type="Label" parent="CanvasLayer/HBoxContainerTopHalf/TopHalf"]
 offset_left = 256.0
 offset_right = 371.0
 offset_bottom = 25.0
@@ -16,7 +38,7 @@ theme_override_font_sizes/font_size = 24
 text = "How to Play?"
 horizontal_alignment = 1
 
-[node name="ListOne" type="Label" parent="."]
+[node name="ListOne" type="Label" parent="CanvasLayer/HBoxContainerTopHalf/TopHalf"]
 offset_left = -24.0
 offset_top = 113.0
 offset_right = 680.0
@@ -31,7 +53,44 @@ The goal of each level is to take one of your pawns to the opposite end of the b
 You lose if all your pawns are captured or blocked."
 horizontal_alignment = 1
 
-[node name="ListTwo" type="Label" parent="."]
+[node name="Queen" type="Sprite2D" parent="CanvasLayer/HBoxContainerTopHalf/TopHalf"]
+position = Vector2(312, 65)
+scale = Vector2(3, 3)
+texture = ExtResource("2_6rbl1")
+
+[node name="BackButton" type="Button" parent="CanvasLayer/HBoxContainerTopHalf/TopHalf"]
+offset_left = -24.0
+offset_right = 10.0
+offset_bottom = 25.0
+theme_override_fonts/font = ExtResource("1_wm42f")
+text = "Back"
+
+[node name="PlayButton" type="Button" parent="CanvasLayer/HBoxContainerTopHalf/TopHalf"]
+offset_left = 624.0
+offset_right = 666.0
+offset_bottom = 25.0
+theme_override_fonts/font = ExtResource("1_wm42f")
+text = "Play"
+
+[node name="HBoxContainerBottomHalf" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -392.0
+offset_top = -432.0
+offset_right = -352.0
+offset_bottom = -392.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="BottomHalf" type="Node2D" parent="CanvasLayer/HBoxContainerBottomHalf"]
+position = Vector2(64, 23)
+metadata/_edit_group_ = true
+
+[node name="SubListOne" type="Label" parent="CanvasLayer/HBoxContainerBottomHalf/BottomHalf"]
 offset_left = -16.0
 offset_top = 289.0
 offset_right = 318.0
@@ -45,7 +104,7 @@ Take out enemy pieces quickly or simply act as bait.
 "
 horizontal_alignment = 1
 
-[node name="ListTwo2" type="Label" parent="."]
+[node name="SubListTwo" type="Label" parent="CanvasLayer/HBoxContainerBottomHalf/BottomHalf"]
 offset_left = 328.0
 offset_top = 281.0
 offset_right = 704.0
@@ -57,7 +116,7 @@ text = "Think about your enemy's moves before you act:
 You can predict the AI's moves and even trick the AI."
 horizontal_alignment = 1
 
-[node name="ListTwo3" type="Label" parent="."]
+[node name="SubListThree" type="Label" parent="CanvasLayer/HBoxContainerBottomHalf/BottomHalf"]
 offset_left = 224.0
 offset_top = 345.0
 offset_right = 600.0
@@ -69,21 +128,5 @@ text = "The AI will always prioritize a capture if possible,
 and if not it will move towards our closest piece."
 horizontal_alignment = 1
 
-[node name="Queen" type="Sprite2D" parent="."]
-position = Vector2(312, 65)
-scale = Vector2(3, 3)
-texture = ExtResource("2_6rbl1")
-
-[node name="BackButton" type="Button" parent="."]
-offset_left = -24.0
-offset_right = 10.0
-offset_bottom = 25.0
-theme_override_fonts/font = ExtResource("1_wm42f")
-text = "Back"
-
-[node name="PlayButton" type="Button" parent="."]
-offset_left = 624.0
-offset_right = 666.0
-offset_bottom = 25.0
-theme_override_fonts/font = ExtResource("1_wm42f")
-text = "Play"
+[connection signal="pressed" from="CanvasLayer/HBoxContainerTopHalf/TopHalf/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainerTopHalf/TopHalf/PlayButton" to="." method="_on_play_button_pressed"]

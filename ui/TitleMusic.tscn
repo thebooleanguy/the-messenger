@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmbn2g443npxu"]
+
+[ext_resource type="AudioStream" uid="uid://bo83ls818hov4" path="res://assets/music/Irrational Machines - RPG Title Screen Music Pack - 01 Title Screen.mp3" id="1_gus32"]
+
+[node name="TitleMusic" type="AudioStreamPlayer"]
+stream = ExtResource("1_gus32")
+autoplay = true

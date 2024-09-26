@@ -3,10 +3,10 @@ extends Node2D
 class_name ChessBoard
 
 const CHESS_TILE: PackedScene = preload("res://board/ChessTile.tscn")
-var GRID_SIZE: int = 5
+var GRID_SIZE: int = 4
 const TILE_SIZE: float = 63
 const CENTERED_TILE_OFFSET := Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
-var CHESSBOARD_SIZE := TILE_SIZE * GRID_SIZE
+var CHESSBOARD_SIZE :float = TILE_SIZE * GRID_SIZE
 var tile_grid: Array = []
 var selected_piece: Node = null
 var selected_tile: Node = null
@@ -14,7 +14,8 @@ var valid_move_tiles: Array = []
 var turn: int = 1
 var player_move_in_progress: bool = false
 
-var current_level: int = 1
+@onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
+var current_level: int = 3
 var max_levels: int = 4
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
@@ -30,8 +31,9 @@ var piece_scene_map: Dictionary = {
 
 func _ready() -> void:
 	# Center board on viewport
-	position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
-	position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
+	#position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
+	#position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
+	get_viewport_rect().size = Vector2(768,432)
 	draw_board()
 	level_manager = LevelManager.new()
 	load_current_level()
@@ -40,6 +42,15 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("restart"):
 		load_current_level()
+	# Dynamic Resizing
+	#if GRID_SIZE > 5:
+		#get_viewport_rect().size = Vector2(800,600)
+		#position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
+		#position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
+	#else:
+		#get_viewport_rect().size = Vector2(768,432)
+		#position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
+		#position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
 
 func draw_board() -> void:
 	# Clear existing tiles from tile_grid if it already exists
@@ -133,6 +144,9 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 					if current_level < max_levels:
 						current_level += 1
 						load_current_level()
+					# Game Complete
+					else:
+						get_tree().change_scene_to_file("res://ui/GameOver.tscn")
 					return
 				else:
 					ai_move_black_piece()
@@ -250,6 +264,15 @@ func setup_level(level_data: Dictionary) -> void:
 		#reset_board()
 	else:
 		print("Grid size not specified in level data.")
+	lvl_label.text = ("Level " + str(current_level))
+	
+	# Center Board
+	if GRID_SIZE > 5:
+		get_viewport_rect().size = Vector2(800,600)
+	else:
+		get_viewport_rect().size = Vector2(768,432)
+	position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
+	position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
 
 	# Place pieces based on level_data
 	for piece_data: Dictionary in level_data["pieces"]:

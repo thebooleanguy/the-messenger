@@ -1,23 +1,46 @@
-[gd_scene load_steps=7 format=3 uid="uid://bumot8y7wadd5"]
+[gd_scene load_steps=10 format=3 uid="uid://bumot8y7wadd5"]
 
+[ext_resource type="Script" path="res://ui/ui.gd" id="1_2j2c2"]
 [ext_resource type="FontFile" uid="uid://de2xva1tsv2cl" path="res://assets/fonts/VT323/VT323-Regular.ttf" id="1_q05vw"]
 [ext_resource type="Texture2D" uid="uid://cn0d4gekdwvn" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_pawn.png" id="2_e2so6"]
 [ext_resource type="Texture2D" uid="uid://c467b88n8yc7n" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_rook.png" id="3_n270y"]
 [ext_resource type="Texture2D" uid="uid://dmpywprl516t1" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_bishop.png" id="4_3yai4"]
 [ext_resource type="Texture2D" uid="uid://dpyl6w2jclnuh" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_knight.png" id="5_ynu7c"]
 [ext_resource type="Texture2D" uid="uid://sg0vlr8g5wbi" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_queen.png" id="6_uaith"]
+[ext_resource type="PackedScene" uid="uid://bmbn2g443npxu" path="res://ui/TitleMusic.tscn" id="7_6l78y"]
+[ext_resource type="PackedScene" uid="uid://d1m1bgf6din3i" path="res://ui/UISound.tscn" id="9_1w727"]
 
 [node name="Intro" type="Node2D"]
-
-[node name="Top" type="Node2D" parent="."]
-position = Vector2(8, 0)
+position = Vector2(384, 231)
+script = ExtResource("1_2j2c2")
 metadata/_edit_group_ = true
 
-[node name="Title" type="Label" parent="Top"]
-offset_left = 272.0
-offset_top = 40.0
-offset_right = 438.0
-offset_bottom = 73.0
+[node name="TitleMusic" parent="." instance=ExtResource("7_6l78y")]
+
+[node name="UISound" parent="." instance=ExtResource("9_1w727")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainerTop" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -24.0
+offset_top = 64.0
+offset_right = -24.0
+offset_bottom = 64.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="Top" type="Node2D" parent="CanvasLayer/HBoxContainerTop"]
+position = Vector2(-336, -32)
+metadata/_edit_group_ = true
+
+[node name="Title" type="Label" parent="CanvasLayer/HBoxContainerTop/Top"]
+offset_left = 277.0
+offset_top = 24.0
+offset_right = 443.0
+offset_bottom = 57.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_q05vw")
 theme_override_font_sizes/font_size = 32
@@ -25,81 +48,113 @@ text = "The Messenger
 "
 horizontal_alignment = 1
 
-[node name="SubTitle" type="Label" parent="Top"]
-offset_left = 248.0
-offset_top = 72.0
-offset_right = 456.0
-offset_bottom = 96.0
+[node name="SubTitle" type="Label" parent="CanvasLayer/HBoxContainerTop/Top"]
+offset_left = 256.0
+offset_top = 57.0
+offset_right = 464.0
+offset_bottom = 77.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_q05vw")
 theme_override_font_sizes/font_size = 20
 text = "A chess-themed puzzle game"
 horizontal_alignment = 1
 
-[node name="Middle" type="Node2D" parent="."]
-position = Vector2(16, 8)
+[node name="HBoxContainerMiddle" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -32.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Middle" type="Node2D" parent="CanvasLayer/HBoxContainerMiddle"]
+position = Vector2(-348, -188)
 metadata/_edit_group_ = true
 
-[node name="Pawn" type="Sprite2D" parent="Middle"]
+[node name="Pawn" type="Sprite2D" parent="CanvasLayer/HBoxContainerMiddle/Middle"]
 position = Vector2(344, 200)
 scale = Vector2(8, 8)
 texture = ExtResource("2_e2so6")
 
-[node name="Rook" type="Sprite2D" parent="Middle"]
+[node name="Rook" type="Sprite2D" parent="CanvasLayer/HBoxContainerMiddle/Middle"]
 position = Vector2(184, 208)
 scale = Vector2(3, 3)
 texture = ExtResource("3_n270y")
 
-[node name="Bishop" type="Sprite2D" parent="Middle"]
+[node name="Bishop" type="Sprite2D" parent="CanvasLayer/HBoxContainerMiddle/Middle"]
 position = Vector2(248, 216)
 scale = Vector2(3, 3)
 texture = ExtResource("4_3yai4")
 
-[node name="Knight" type="Sprite2D" parent="Middle"]
+[node name="Knight" type="Sprite2D" parent="CanvasLayer/HBoxContainerMiddle/Middle"]
 position = Vector2(440, 216)
 scale = Vector2(3, 3)
 texture = ExtResource("5_ynu7c")
 
-[node name="Queen" type="Sprite2D" parent="Middle"]
+[node name="Queen" type="Sprite2D" parent="CanvasLayer/HBoxContainerMiddle/Middle"]
 position = Vector2(512, 208)
 scale = Vector2(3, 3)
 texture = ExtResource("6_uaith")
 
-[node name="Buttons" type="Node2D" parent="Middle"]
+[node name="Buttons" type="Node2D" parent="CanvasLayer/HBoxContainerMiddle/Middle"]
+metadata/_edit_group_ = true
 
-[node name="StartButton" type="Button" parent="Middle/Buttons"]
+[node name="StartButton" type="Button" parent="CanvasLayer/HBoxContainerMiddle/Middle/Buttons"]
 offset_left = 304.0
 offset_top = 304.0
 offset_right = 349.0
 offset_bottom = 331.0
 scale = Vector2(1.8343, 1.63636)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_q05vw")
 theme_override_font_sizes/font_size = 18
 text = "Start"
 
-[node name="InstructionsButton" type="Button" parent="Middle/Buttons"]
+[node name="InstructionsButton" type="Button" parent="CanvasLayer/HBoxContainerMiddle/Middle/Buttons"]
 offset_left = 184.0
 offset_top = 312.0
 offset_right = 269.0
 offset_bottom = 343.0
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0.458824, 0.458824, 0.458824, 1)
 theme_override_fonts/font = ExtResource("1_q05vw")
 text = "How to Play?"
 flat = true
 
-[node name="Controls" type="Button" parent="Middle/Buttons"]
+[node name="Controls" type="Button" parent="CanvasLayer/HBoxContainerMiddle/Middle/Buttons"]
 offset_left = 424.0
 offset_top = 312.0
 offset_right = 484.0
 offset_bottom = 343.0
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0.556863, 0.556863, 0.556863, 1)
 theme_override_fonts/font = ExtResource("1_q05vw")
 text = "Controls"
 flat = true
 
-[node name="Bottom" type="Node2D" parent="."]
+[node name="HBoxContainerBottom" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -384.0
+offset_top = -3.0
+offset_right = -384.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
 
-[node name="BottomTextLeft" type="Label" parent="Bottom"]
+[node name="Bottom" type="Node2D" parent="CanvasLayer/HBoxContainerBottom"]
+position = Vector2(0, -432)
+metadata/_edit_group_ = true
+
+[node name="BottomTextLeft" type="Label" parent="CanvasLayer/HBoxContainerBottom/Bottom"]
 offset_left = 40.0
 offset_top = 392.0
 offset_right = 489.0
@@ -112,7 +167,7 @@ text = "Your king has betrayed you and you must warn the townspeople.
 "
 horizontal_alignment = 1
 
-[node name="BottomTextRight" type="Label" parent="Bottom"]
+[node name="BottomTextRight" type="Label" parent="CanvasLayer/HBoxContainerBottom/Bottom"]
 offset_left = 256.0
 offset_top = 408.0
 offset_right = 705.0
@@ -122,3 +177,7 @@ theme_override_fonts/font = ExtResource("1_q05vw")
 theme_override_font_sizes/font_size = 14
 text = "You have already lost the battle, but to win the war you must retreat."
 horizontal_alignment = 1
+
+[connection signal="pressed" from="CanvasLayer/HBoxContainerMiddle/Middle/Buttons/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainerMiddle/Middle/Buttons/InstructionsButton" to="." method="_on_instructions_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainerMiddle/Middle/Buttons/Controls" to="." method="_on_controls_pressed"]

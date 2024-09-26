@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1m1bgf6din3i"]
+
+[ext_resource type="AudioStream" uid="uid://bgnudx30si3pt" path="res://assets/sound-effects/ui_button.mp3" id="1_4qsse"]
+
+[node name="UISound" type="AudioStreamPlayer"]
+stream = ExtResource("1_4qsse")
+volume_db = -19.0

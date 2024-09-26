@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbxfcbs8na24l"]
+[gd_scene load_steps=8 format=3 uid="uid://cbxfcbs8na24l"]
 
 [ext_resource type="Script" path="res://board/chess_board.gd" id="1_bdnp4"]
 [ext_resource type="AudioStream" uid="uid://vxb6eytnyj6p" path="res://assets/music/Rising.mp3" id="2_3qn54"]
@@ -6,9 +6,9 @@
 [ext_resource type="AudioStream" uid="uid://dig5wq2iseuec" path="res://assets/sound-effects/piece_capture.mp3" id="4_rbdeg"]
 [ext_resource type="AudioStream" uid="uid://ujpmyjmm75d7" path="res://assets/sound-effects/piece_move.mp3" id="5_w62pu"]
 [ext_resource type="AudioStream" uid="uid://77ca0kpc3kgg" path="res://assets/sound-effects/win_sound.mp3" id="6_4mrgc"]
+[ext_resource type="FontFile" uid="uid://de2xva1tsv2cl" path="res://assets/fonts/VT323/VT323-Regular.ttf" id="7_a5lgn"]
 
 [node name="ChessBoard" type="Node2D"]
-position = Vector2(150, 40)
 script = ExtResource("1_bdnp4")
 metadata/_edit_group_ = true
 
@@ -28,3 +28,37 @@ stream = ExtResource("5_w62pu")
 [node name="WinSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_4mrgc")
 volume_db = 6.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainerTopLeft" type="HBoxContainer" parent="CanvasLayer"]
+offset_left = 39.0
+offset_top = 17.0
+offset_right = 83.0
+offset_bottom = 57.0
+metadata/_edit_group_ = true
+
+[node name="LevelLabel" type="Label" parent="CanvasLayer/HBoxContainerTopLeft"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("7_a5lgn")
+theme_override_font_sizes/font_size = 22
+text = "Level"
+
+[node name="HBoxContainerTopRight" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -162.0
+offset_top = 16.0
+offset_right = -33.0
+offset_bottom = 56.0
+grow_horizontal = 0
+metadata/_edit_group_ = true
+
+[node name="RestartLabel" type="Label" parent="CanvasLayer/HBoxContainerTopRight"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("7_a5lgn")
+theme_override_font_sizes/font_size = 16
+text = "Press 'R' to Restart"
