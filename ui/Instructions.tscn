@@ -1,0 +1,89 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwuec4a0pnty7"]
+
+[ext_resource type="FontFile" uid="uid://de2xva1tsv2cl" path="res://assets/fonts/VT323/VT323-Regular.ttf" id="1_wm42f"]
+[ext_resource type="Texture2D" uid="uid://sg0vlr8g5wbi" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_queen.png" id="2_6rbl1"]
+
+[node name="Instructions" type="Node2D"]
+position = Vector2(64, 23)
+
+[node name="Title" type="Label" parent="."]
+offset_left = 256.0
+offset_right = 371.0
+offset_bottom = 25.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_wm42f")
+theme_override_font_sizes/font_size = 24
+text = "How to Play?"
+horizontal_alignment = 1
+
+[node name="ListOne" type="Label" parent="."]
+offset_left = -24.0
+offset_top = 113.0
+offset_right = 680.0
+offset_bottom = 241.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_wm42f")
+theme_override_font_sizes/font_size = 20
+text = "Think of each level as a puzzle, similar to Sokoban rather than Chess.
+
+The goal of each level is to take one of your pawns to the opposite end of the board.
+
+You lose if all your pawns are captured or blocked."
+horizontal_alignment = 1
+
+[node name="ListTwo" type="Label" parent="."]
+offset_left = -16.0
+offset_top = 289.0
+offset_right = 318.0
+offset_bottom = 346.0
+theme_override_colors/font_color = Color(0.223529, 0.223529, 0.223529, 1)
+theme_override_fonts/font = ExtResource("1_wm42f")
+theme_override_font_sizes/font_size = 16
+text = "Use your other pieces to your advantage: 
+Take out enemy pieces quickly or simply act as bait.	
+
+"
+horizontal_alignment = 1
+
+[node name="ListTwo2" type="Label" parent="."]
+offset_left = 328.0
+offset_top = 281.0
+offset_right = 704.0
+offset_bottom = 329.0
+theme_override_colors/font_color = Color(0.223529, 0.223529, 0.223529, 1)
+theme_override_fonts/font = ExtResource("1_wm42f")
+theme_override_font_sizes/font_size = 16
+text = "Think about your enemy's moves before you act:
+You can predict the AI's moves and even trick the AI."
+horizontal_alignment = 1
+
+[node name="ListTwo3" type="Label" parent="."]
+offset_left = 224.0
+offset_top = 345.0
+offset_right = 600.0
+offset_bottom = 401.0
+theme_override_colors/font_color = Color(0.223529, 0.223529, 0.223529, 1)
+theme_override_fonts/font = ExtResource("1_wm42f")
+theme_override_font_sizes/font_size = 16
+text = "The AI will always prioritize a capture if possible, 
+and if not it will move towards our closest piece."
+horizontal_alignment = 1
+
+[node name="Queen" type="Sprite2D" parent="."]
+position = Vector2(312, 65)
+scale = Vector2(3, 3)
+texture = ExtResource("2_6rbl1")
+
+[node name="BackButton" type="Button" parent="."]
+offset_left = -24.0
+offset_right = 10.0
+offset_bottom = 25.0
+theme_override_fonts/font = ExtResource("1_wm42f")
+text = "Back"
+
+[node name="PlayButton" type="Button" parent="."]
+offset_left = 624.0
+offset_right = 666.0
+offset_bottom = 25.0
+theme_override_fonts/font = ExtResource("1_wm42f")
+text = "Play"

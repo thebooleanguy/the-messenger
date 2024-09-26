@@ -1,0 +1,73 @@
+[gd_scene load_steps=4 format=3 uid="uid://detqrw4pp5y67"]
+
+[ext_resource type="FontFile" uid="uid://de2xva1tsv2cl" path="res://assets/fonts/VT323/VT323-Regular.ttf" id="1_jjbl0"]
+[ext_resource type="Texture2D" uid="uid://cn0d4gekdwvn" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_pawn.png" id="2_ftq3s"]
+[ext_resource type="Texture2D" uid="uid://dmpywprl516t1" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_bishop.png" id="3_pk3oe"]
+
+[node name="GameOver" type="Node2D"]
+
+[node name="Title" type="Label" parent="."]
+offset_left = 272.0
+offset_top = 40.0
+offset_right = 438.0
+offset_bottom = 73.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_jjbl0")
+theme_override_font_sizes/font_size = 32
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="SubTitle" type="Label" parent="."]
+offset_left = 248.0
+offset_top = 80.0
+offset_right = 456.0
+offset_bottom = 104.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_jjbl0")
+theme_override_font_sizes/font_size = 20
+text = "You won"
+horizontal_alignment = 1
+
+[node name="SubTitle2" type="Label" parent="."]
+offset_left = 152.0
+offset_top = 328.0
+offset_right = 584.0
+offset_bottom = 352.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_jjbl0")
+theme_override_font_sizes/font_size = 20
+text = "The townspeople can evacuate safely due to your efforts."
+horizontal_alignment = 1
+
+[node name="Pawn" type="Sprite2D" parent="."]
+position = Vector2(352, 224)
+scale = Vector2(8, 8)
+texture = ExtResource("2_ftq3s")
+
+[node name="Pawn2" type="Sprite2D" parent="."]
+position = Vector2(456, 184)
+scale = Vector2(6, 6)
+texture = ExtResource("2_ftq3s")
+
+[node name="Pawn5" type="Sprite2D" parent="."]
+position = Vector2(264, 184)
+scale = Vector2(5, 5)
+texture = ExtResource("2_ftq3s")
+
+[node name="Bishop" type="Sprite2D" parent="."]
+position = Vector2(120, 208)
+scale = Vector2(5, 5)
+texture = ExtResource("3_pk3oe")
+
+[node name="Bishop2" type="Sprite2D" parent="."]
+position = Vector2(608, 216)
+scale = Vector2(5, 5)
+texture = ExtResource("3_pk3oe")
+
+[node name="MenuButton" type="Button" parent="."]
+offset_left = 680.0
+offset_top = 24.0
+offset_right = 722.0
+offset_bottom = 49.0
+theme_override_fonts/font = ExtResource("1_jjbl0")
+text = "Menu"

@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://hlipkyeedh1i"]
+
+[ext_resource type="FontFile" uid="uid://de2xva1tsv2cl" path="res://assets/fonts/VT323/VT323-Regular.ttf" id="1_shs4l"]
+[ext_resource type="Texture2D" uid="uid://dpyl6w2jclnuh" path="res://assets/art/Pixel_Art_Chess_DevilsWorkshop_V04/chess/black_knight.png" id="2_txedf"]
+
+[node name="Controls" type="Node2D"]
+
+[node name="Title" type="Label" parent="."]
+offset_left = 304.0
+offset_top = 24.0
+offset_right = 419.0
+offset_bottom = 49.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_shs4l")
+theme_override_font_sizes/font_size = 24
+text = "Controls"
+horizontal_alignment = 1
+
+[node name="Knight" type="Sprite2D" parent="."]
+position = Vector2(360, 104)
+scale = Vector2(3, 3)
+texture = ExtResource("2_txedf")
+
+[node name="ListOne" type="Label" parent="."]
+offset_left = 32.0
+offset_top = 184.0
+offset_right = 736.0
+offset_bottom = 319.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_shs4l")
+theme_override_font_sizes/font_size = 20
+text = "Use your mouse to select and move pieces.
+
+Clicking on a selected piece again 
+or on an invalid position will deselect your selected piece.
+
+Press 'R' to Restart a level."
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="."]
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 66.0
+offset_bottom = 49.0
+theme_override_fonts/font = ExtResource("1_shs4l")
+text = "Back"
+
+[node name="PlayButton" type="Button" parent="."]
+offset_left = 680.0
+offset_top = 24.0
+offset_right = 722.0
+offset_bottom = 49.0
+theme_override_fonts/font = ExtResource("1_shs4l")
+text = "Play"
