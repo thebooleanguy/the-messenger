@@ -14,7 +14,7 @@ var valid_move_tiles: Array = []
 var turn: int = 1
 var player_move_in_progress: bool = false
 
-var current_level: int = 4
+var current_level: int = 1
 var max_levels: int = 4
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
@@ -84,11 +84,13 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 			# Capture piece
 			if tile_to.piece:
 				tile_to.piece.queue_free()
+				$PieceCaptureSound.play()
 			# Move piece
 			piece.position = tile_to.position + CENTERED_TILE_OFFSET
 			tile_to.piece = piece
 			piece.grid_position = tile_to.grid_position
 			tile_from.piece = null
+			$PieceMoveSound.play()
 	else:
 		print("Out of bounds")
 
@@ -127,6 +129,7 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 				turn -= 1
 				if (grid_pos.y == 0) and (selected_piece is Pawn) and (selected_piece.team == 1):
 					print("You've won! Loading next level...")
+					$WinSound.play()
 					if current_level < max_levels:
 						current_level += 1
 						load_current_level()
@@ -244,7 +247,7 @@ func setup_level(level_data: Dictionary) -> void:
 	if "grid_size" in level_data:
 		GRID_SIZE = level_data["grid_size"]
 		draw_board()  # Call draw_board to create the board with the new size
-		reset_board()
+		#reset_board()
 	else:
 		print("Grid size not specified in level data.")
 
@@ -278,7 +281,12 @@ func reset_board() -> void:
 				tile.piece = null  # Clear the reference
 				
 func load_current_level() -> void:
+	reset_board()
 	var level_data := level_manager.load_level("level_" + str(current_level))  # Load the current level
+	if current_level == 4:
+		$TutorialMusic.stop()
+		#$MusicPlayer.stream = preload("res://assets/music/Intense.mp3")
+		$GameMusic.play()
 	if level_data.size() > 0:
 		setup_level(level_data)
 	else:

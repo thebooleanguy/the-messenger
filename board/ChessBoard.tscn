@@ -1,8 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://cbxfcbs8na24l"]
+[gd_scene load_steps=7 format=3 uid="uid://cbxfcbs8na24l"]
 
 [ext_resource type="Script" path="res://board/chess_board.gd" id="1_bdnp4"]
+[ext_resource type="AudioStream" uid="uid://vxb6eytnyj6p" path="res://assets/music/Rising.mp3" id="2_3qn54"]
+[ext_resource type="AudioStream" uid="uid://dae1vrfpw5dxk" path="res://assets/music/Intense.mp3" id="3_cr0nx"]
+[ext_resource type="AudioStream" uid="uid://dig5wq2iseuec" path="res://assets/sound-effects/piece_capture.mp3" id="4_rbdeg"]
+[ext_resource type="AudioStream" uid="uid://ujpmyjmm75d7" path="res://assets/sound-effects/piece_move.mp3" id="5_w62pu"]
+[ext_resource type="AudioStream" uid="uid://77ca0kpc3kgg" path="res://assets/sound-effects/win_sound.mp3" id="6_4mrgc"]
 
 [node name="ChessBoard" type="Node2D"]
 position = Vector2(150, 40)
 script = ExtResource("1_bdnp4")
 metadata/_edit_group_ = true
+
+[node name="TutorialMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_3qn54")
+autoplay = true
+
+[node name="GameMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_cr0nx")
+
+[node name="PieceCaptureSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_rbdeg")
+
+[node name="PieceMoveSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_w62pu")
+
+[node name="WinSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_4mrgc")
+volume_db = 6.0
