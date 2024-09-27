@@ -15,7 +15,7 @@ var turn: int = 0
 var player_move_in_progress: bool = false
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-var current_level: int = 5
+var current_level: int = 1
 var max_levels: int = 6
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
