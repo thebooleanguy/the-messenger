@@ -1,10 +1,10 @@
 {
-  "grid_size": 6,
+  "grid_size": 5,
   "pieces": [
 	{"type": "Knight", "position": [0, 1], "team": 0},
 	{"type": "Knight", "position": [2, 1], "team": 0},
 	{"type": "Knight", "position": [4, 1], "team": 0},
-	{"type": "Pawn", "position": [2, 5], "team": 1},
-	{"type": "Rook", "position": [3, 5], "team": 1},
+	{"type": "Pawn", "position": [1, 4], "team": 1},
+	{"type": "Rook", "position": [3, 4], "team": 1},
   ]
 }

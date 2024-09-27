@@ -11,12 +11,12 @@ var tile_grid: Array = []
 var selected_piece: Node = null
 var selected_tile: Node = null
 var valid_move_tiles: Array = []
-var turn: int = 1
+var turn: int = 0
 var player_move_in_progress: bool = false
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-var current_level: int = 3
-var max_levels: int = 4
+var current_level: int = 5
+var max_levels: int = 5
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
 
@@ -33,7 +33,7 @@ func _ready() -> void:
 	# Center board on viewport
 	#position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
 	#position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
-	get_viewport_rect().size = Vector2(768,432)
+	get_viewport().size = Vector2(768,432)
 	draw_board()
 	level_manager = LevelManager.new()
 	load_current_level()
@@ -43,14 +43,8 @@ func _process(_delta: float) -> void:
 	if Input.is_action_pressed("restart"):
 		load_current_level()
 	# Dynamic Resizing
-	#if GRID_SIZE > 5:
-		#get_viewport_rect().size = Vector2(800,600)
-		#position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
-		#position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
-	#else:
-		#get_viewport_rect().size = Vector2(768,432)
-		#position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
-		#position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
+	position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
+	position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
 
 func draw_board() -> void:
 	# Clear existing tiles from tile_grid if it already exists
@@ -88,16 +82,19 @@ func place_piece(piece_scene: PackedScene, pos: Vector2, team: int) -> void:
 
 func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 	if is_within_bounds(curr_pos) and is_within_bounds(new_pos):
+		var tween = create_tween()
 		var tile_from: Node = tile_grid[curr_pos.y][curr_pos.x] 
 		var tile_to: Node = tile_grid[new_pos.y][new_pos.x] 
 		var piece: Node = tile_from.piece
 		if piece:
 			# Capture piece
 			if tile_to.piece:
+				#await get_tree().create_timer(0.3).timeout
 				tile_to.piece.queue_free()
 				$PieceCaptureSound.play()
 			# Move piece
-			piece.position = tile_to.position + CENTERED_TILE_OFFSET
+			#piece.position = tile_to.position + CENTERED_TILE_OFFSET
+			tween.tween_property(piece, "position", tile_to.position + CENTERED_TILE_OFFSET, 0.1)
 			tile_to.piece = piece
 			piece.grid_position = tile_to.grid_position
 			tile_from.piece = null
@@ -267,10 +264,10 @@ func setup_level(level_data: Dictionary) -> void:
 	lvl_label.text = ("Level " + str(current_level))
 	
 	# Center Board
-	if GRID_SIZE > 5:
-		get_viewport_rect().size = Vector2(800,600)
-	else:
-		get_viewport_rect().size = Vector2(768,432)
+	#if GRID_SIZE > 5:
+		#get_viewport().size = Vector2(800,600)
+	#else:
+	#get_viewport().size = Vector2(768,432)
 	position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
 	position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
 
