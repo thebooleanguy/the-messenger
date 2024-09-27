@@ -3,7 +3,7 @@
 # The Messenger
 ## A chess-themed puzzle game I made with Godot
 
-A chess game with with a unique little twist.
+A chess game with a unique little twist.
 Navigate through a series of levels where the goal of each level is to take one of our pawns to the other side of the board.
 
 Play on [itch.io](https://thebooleanguy.itch.io/the-messenger)
