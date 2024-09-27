@@ -15,8 +15,8 @@ var turn: int = 0
 var player_move_in_progress: bool = false
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-var current_level: int = 5
-var max_levels: int = 5
+var current_level: int = 1
+var max_levels: int = 6
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
 
@@ -82,7 +82,7 @@ func place_piece(piece_scene: PackedScene, pos: Vector2, team: int) -> void:
 
 func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 	if is_within_bounds(curr_pos) and is_within_bounds(new_pos):
-		var tween = create_tween()
+		var tween: Tween = create_tween()
 		var tile_from: Node = tile_grid[curr_pos.y][curr_pos.x] 
 		var tile_to: Node = tile_grid[new_pos.y][new_pos.x] 
 		var piece: Node = tile_from.piece
@@ -135,18 +135,24 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 			if grid_pos in valid_move_tiles:
 				move_piece(selected_tile.grid_position, grid_pos)
 				turn -= 1
-				if (grid_pos.y == 0) and (selected_piece is Pawn) and (selected_piece.team == 1):
-					print("You've won! Loading next level...")
-					$WinSound.play()
-					if current_level < max_levels:
-						current_level += 1
-						load_current_level()
-					# Game Complete
-					else:
-						get_tree().change_scene_to_file("res://ui/GameOver.tscn")
-					return
-				else:
-					ai_move_black_piece()
+				await get_tree().create_timer(0.1).timeout
+				ai_move_black_piece()
+				await get_tree().create_timer(0.15).timeout
+				#Check for Win
+				if is_instance_valid(selected_piece):
+					if (grid_pos.y == 0) and (selected_piece is Pawn) and (selected_piece.team == 1):
+						print("You've won! Loading next level...")
+						$WinSound.play()
+						if current_level < max_levels:
+							current_level += 1
+							load_current_level()
+						# Game Complete
+						else:
+							get_tree().change_scene_to_file("res://ui/GameOver.tscn")
+						return
+				
+				
+					
 				
 		# Unhighlight the selected tile and valid move tiles
 		selected_tile.color_rect.color = selected_tile.color_rect_default_color
@@ -156,6 +162,8 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 			tile.color_rect.color = tile.color_rect_default_color
 			tile.is_selected = false
 			player_move_in_progress = false
+		
+		
 		
 		# Reset selection
 		selected_piece = null
@@ -180,31 +188,36 @@ func ai_move_black_piece() -> void:
 
 	if black_pieces.size() > 0:
 		# Try to capture if possible
-		var pieces_with_captures := []
-		for piece: Node in black_pieces:
-			var valid_moves: Array = piece.get_valid_moves()
-			var capture_moves: Array = []
-			for move: Vector2 in valid_moves:
-				if has_enemy_piece_at(move, piece.team):
-					capture_moves.append(move)
+		var best_capture: Dictionary = find_closest_capture(black_pieces)
 
-			if capture_moves.size() > 0:
-				pieces_with_captures.append({
-					"piece": piece,
-					"capture_moves": capture_moves
-				})
-
-		if pieces_with_captures.size() > 0:
-			# Select a random black piece that can capture
-			var random_capture: Dictionary = pieces_with_captures[randi() % pieces_with_captures.size()]
-			var random_piece: Node = random_capture["piece"]
-			var capture_moves: Array = random_capture["capture_moves"]
-			# Prioritize capturing a piece
-			var capture_move: Vector2 = capture_moves[randi() % capture_moves.size()]
-			move_piece(random_piece.grid_position, capture_move)
+		if best_capture:
+			# Perform the closest capture
+			move_piece(best_capture["piece"].grid_position, best_capture["move"])
 		else:
 			# No captures, so move the black piece closest to a white piece
 			move_closest_to_white(black_pieces)
+
+
+# Helper function to find the closest capture
+func find_closest_capture(black_pieces: Array) -> Dictionary:
+	var best_capture: Dictionary
+	var closest_distance: float = INF
+
+	for piece: Node in black_pieces:
+		var valid_moves: Array = piece.get_valid_moves()
+		for move: Vector2 in valid_moves:
+			if has_enemy_piece_at(move, piece.team):
+				# Find the distance to the white piece at the capture position
+				for y in range(GRID_SIZE):
+					for x in range(GRID_SIZE):
+						var tile: Node = tile_grid[y][x]
+						if tile.piece and tile.piece.team == 1 and tile.piece.grid_position == move:  # White piece
+							var distance: float = piece.grid_position.distance_to(tile.piece.grid_position)
+							if distance < closest_distance:
+								closest_distance = distance
+								best_capture = {"piece": piece, "move": move}
+
+	return best_capture
 
 
 # Helper function to move the black piece closest to a white piece
@@ -303,6 +316,8 @@ func reset_board() -> void:
 func load_current_level() -> void:
 	reset_board()
 	var level_data := level_manager.load_level("level_" + str(current_level))  # Load the current level
+	if current_level == 1:
+		$TutorialMusic.play()
 	if current_level == 4:
 		$TutorialMusic.stop()
 		#$MusicPlayer.stream = preload("res://assets/music/Intense.mp3")

@@ -14,7 +14,6 @@ metadata/_edit_group_ = true
 
 [node name="TutorialMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_3qn54")
-autoplay = true
 
 [node name="GameMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_cr0nx")
