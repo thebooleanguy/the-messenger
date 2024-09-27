@@ -15,7 +15,7 @@ var turn: int = 0
 var player_move_in_progress: bool = false
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-var current_level: int = 1
+var current_level: int = 5
 var max_levels: int = 6
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
@@ -41,6 +41,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("restart"):
+		#await get_tree().create_timer(0.1).timeout
 		load_current_level()
 	# Dynamic Resizing
 	position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
@@ -90,15 +91,16 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 			# Capture piece
 			if tile_to.piece:
 				#await get_tree().create_timer(0.3).timeout
-				tile_to.piece.queue_free()
 				$PieceCaptureSound.play()
+				tile_to.piece.queue_free()
 			# Move piece
 			#piece.position = tile_to.position + CENTERED_TILE_OFFSET
 			tween.tween_property(piece, "position", tile_to.position + CENTERED_TILE_OFFSET, 0.1)
 			tile_to.piece = piece
 			piece.grid_position = tile_to.grid_position
 			tile_from.piece = null
-			$PieceMoveSound.play()
+			if !$PieceMoveSound.playing:
+				$PieceMoveSound.play()
 	else:
 		print("Out of bounds")
 
@@ -135,9 +137,9 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 			if grid_pos in valid_move_tiles:
 				move_piece(selected_tile.grid_position, grid_pos)
 				turn -= 1
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.05).timeout
 				ai_move_black_piece()
-				await get_tree().create_timer(0.15).timeout
+				await get_tree().create_timer(0.11).timeout
 				#Check for Win
 				if is_instance_valid(selected_piece):
 					if (grid_pos.y == 0) and (selected_piece is Pawn) and (selected_piece.team == 1):
@@ -155,20 +157,19 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 					
 				
 		# Unhighlight the selected tile and valid move tiles
-		selected_tile.color_rect.color = selected_tile.color_rect_default_color
-		selected_tile.is_selected = false
-		for move: Vector2 in valid_move_tiles:
-			var tile: Node = tile_grid[move.y][move.x]
-			tile.color_rect.color = tile.color_rect_default_color
-			tile.is_selected = false
-			player_move_in_progress = false
-		
-		
-		
-		# Reset selection
-		selected_piece = null
-		selected_tile = null
-		valid_move_tiles = []
+		if selected_tile:
+			selected_tile.color_rect.color = selected_tile.color_rect_default_color
+			selected_tile.is_selected = false
+			for move: Vector2 in valid_move_tiles:
+				var tile: Node = tile_grid[move.y][move.x]
+				tile.color_rect.color = tile.color_rect_default_color
+				tile.is_selected = false
+				player_move_in_progress = false
+			
+			# Reset selection
+			selected_piece = null
+			selected_tile = null
+			valid_move_tiles = []
 		
 
 
@@ -187,62 +188,52 @@ func ai_move_black_piece() -> void:
 				black_pieces.append(tile.piece)
 
 	if black_pieces.size() > 0:
-		# Try to capture if possible
-		var best_capture: Dictionary = find_closest_capture(black_pieces)
+		# Move towards closest capture or closest white piece if no capture is available
+		var best_move := find_closest_capture_or_move(black_pieces)
 
-		if best_capture:
-			# Perform the closest capture
-			move_piece(best_capture["piece"].grid_position, best_capture["move"])
-		else:
-			# No captures, so move the black piece closest to a white piece
-			move_closest_to_white(black_pieces)
+		if best_move:
+			move_piece(best_move["piece"].grid_position, best_move["move"])
 
 
-# Helper function to find the closest capture
-func find_closest_capture(black_pieces: Array) -> Dictionary:
+# Helper function to prioritize the closest capture first, otherwise move towards the closest white piece
+func find_closest_capture_or_move(black_pieces: Array) -> Dictionary:
+	#var _best_move: Dictionary
+	var closest_capture_distance: float = INF
+	var closest_move_distance: float = INF
 	var best_capture: Dictionary
-	var closest_distance: float = INF
+	var best_normal_move: Dictionary
 
+	# Loop through all black pieces and their valid moves
 	for piece: Node in black_pieces:
 		var valid_moves: Array = piece.get_valid_moves()
-		for move: Vector2 in valid_moves:
-			if has_enemy_piece_at(move, piece.team):
-				# Find the distance to the white piece at the capture position
-				for y in range(GRID_SIZE):
-					for x in range(GRID_SIZE):
-						var tile: Node = tile_grid[y][x]
-						if tile.piece and tile.piece.team == 1 and tile.piece.grid_position == move:  # White piece
-							var distance: float = piece.grid_position.distance_to(tile.piece.grid_position)
-							if distance < closest_distance:
-								closest_distance = distance
-								best_capture = {"piece": piece, "move": move}
 
-	return best_capture
-
-
-# Helper function to move the black piece closest to a white piece
-func move_closest_to_white(black_pieces: Array) -> void:
-	var closest_piece: Node = null
-	var closest_move: Vector2 = Vector2()
-	var closest_distance: float = INF
-
-	# Find the black piece closest to any white piece
-	for black_piece: Node in black_pieces:
-		var valid_moves: Array = black_piece.get_valid_moves()
 		for move: Vector2 in valid_moves:
 			for y in range(GRID_SIZE):
 				for x in range(GRID_SIZE):
 					var tile: Node = tile_grid[y][x]
-					if tile.piece and tile.piece.team == 1:  # White piece
-						var distance: float = black_piece.grid_position.distance_to(tile.piece.grid_position)
-						if distance < closest_distance:
-							closest_distance = distance
-							closest_piece = black_piece
-							closest_move = move
 
-	# Make the move with the closest black piece
-	if closest_piece:
-		move_piece(closest_piece.grid_position, closest_move)
+					# If there's a white piece on this tile (for a capture)
+					if tile.piece and tile.piece.team == 1:  # White piece
+						var distance: float = piece.grid_position.distance_to(tile.piece.grid_position)
+						
+						# Check if this is a capture
+						if move == tile.piece.grid_position:
+							# Prioritize closest capture
+							if distance < closest_capture_distance:
+								closest_capture_distance = distance
+								best_capture = {"piece": piece, "move": move}
+						else:
+							# Track the closest normal move
+							if distance < closest_move_distance:
+								closest_move_distance = distance
+								best_normal_move = {"piece": piece, "move": move}
+
+	# Prioritize the closest capture first, otherwise fall back to the closest normal move
+	if best_capture:
+		return best_capture
+	else:
+		return best_normal_move
+
 
 
 
