@@ -9,7 +9,7 @@ enum Team {
 @export var black_texture: Texture2D
 @export var white_texture: Texture2D
 @onready var board: Node = get_parent();
-@onready var lives_label = $Label
+@onready var lives_label: Node = $Label
 var grid_position :Vector2 = Vector2.ZERO
 var damaged: bool = false
 var lives: int = 0
@@ -29,7 +29,7 @@ func set_team(team_color: Team) -> void:
 func _ready() -> void:
 	if damaged == true:
 		print("Lives: " + str(lives))
-		$Label.position.x = $Sprite2D.position.x - 4
+		$Label.position.x = $Sprite2D.position.x - 3
 		$Label.position.y = $Sprite2D.position.y - 33
 		$Label.text = str(lives)
 	else:
