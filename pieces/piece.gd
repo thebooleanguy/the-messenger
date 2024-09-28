@@ -12,7 +12,7 @@ enum Team {
 var grid_position :Vector2 = Vector2.ZERO
 
 # Override this method
-func get_valid_moves() -> Array:
+func get_valid_moves() -> Array[Vector2]:
 	print("Not Overridden")
 	return[]
 

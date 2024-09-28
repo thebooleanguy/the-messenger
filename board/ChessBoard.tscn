@@ -14,20 +14,27 @@ metadata/_edit_group_ = true
 
 [node name="TutorialMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_3qn54")
+autoplay = true
+playback_type = 2
+parameters/looping = true
 
 [node name="GameMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_cr0nx")
-autoplay = true
+playback_type = 2
+parameters/looping = true
 
 [node name="PieceCaptureSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_rbdeg")
+playback_type = 2
 
 [node name="PieceMoveSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_w62pu")
+playback_type = 2
 
 [node name="WinSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_4mrgc")
 volume_db = 6.0
+playback_type = 2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -45,23 +52,36 @@ theme_override_fonts/font = ExtResource("7_a5lgn")
 theme_override_font_sizes/font_size = 22
 text = "Level"
 
-[node name="HBoxContainerTopRight" type="HBoxContainer" parent="CanvasLayer"]
+[node name="ControlTopRight" type="Control" parent="CanvasLayer"]
+z_index = -1
+z_as_relative = false
+layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -162.0
+offset_left = -160.0
 offset_top = 16.0
-offset_right = -33.0
+offset_right = -31.0
 offset_bottom = 56.0
 grow_horizontal = 0
 metadata/_edit_group_ = true
 
-[node name="RestartLabel" type="Label" parent="CanvasLayer/HBoxContainerTopRight"]
+[node name="RestartLabel" type="Label" parent="CanvasLayer/ControlTopRight"]
+z_index = -2
+z_as_relative = false
 layout_mode = 2
+offset_top = 11.0
+offset_right = 129.0
+offset_bottom = 28.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("7_a5lgn")
 theme_override_font_sizes/font_size = 16
 text = "Press 'R' to Restart"
+
+[node name="TextureButton" type="TextureButton" parent="CanvasLayer/ControlTopRight"]
+layout_mode = 0
+offset_right = 137.0
+offset_bottom = 40.0
 
 [node name="HBoxContainerCenter" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 8
@@ -76,3 +96,5 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
+
+[connection signal="pressed" from="CanvasLayer/ControlTopRight/TextureButton" to="." method="_on_texture_button_pressed"]

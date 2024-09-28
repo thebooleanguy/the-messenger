@@ -2,8 +2,8 @@ extends "res://pieces/piece.gd"
 
 class_name Bishop
 
-func get_valid_moves() -> Array:
-	var valid_moves: Array = []
+func get_valid_moves() -> Array[Vector2]:
+	var valid_moves: Array[Vector2] = []
 	var current_pos := grid_position
 
 	# Directions for diagonal movement

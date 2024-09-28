@@ -1,7 +1,8 @@
 extends Node2D
 
 func _ready() -> void:
-	get_viewport().size = Vector2(768, 432)
+	#get_viewport().size = Vector2(768, 432)
+	pass
 
 func _on_start_button_pressed() -> void:
 	$UISound.play()

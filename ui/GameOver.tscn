@@ -13,9 +13,11 @@ metadata/_edit_group_ = true
 
 [node name="UISound" parent="." instance=ExtResource("5_u0pcq")]
 
-[node name="GameOverSound" type="AudioStreamPlayer" parent="."]
+[node name="GameOverMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_xj05t")
 autoplay = true
+playback_type = 2
+parameters/looping = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

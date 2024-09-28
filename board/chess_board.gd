@@ -7,10 +7,10 @@ var GRID_SIZE: int = 4
 const TILE_SIZE: float = 63
 const CENTERED_TILE_OFFSET := Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
 var CHESSBOARD_SIZE :float = TILE_SIZE * GRID_SIZE
-var tile_grid: Array = []
+var tile_grid: Array[Array] = []
 var selected_piece: Node = null
 var selected_tile: Node = null
-var valid_move_tiles: Array = []
+var valid_move_tiles: Array[Vector2] = []
 var turn: int = 0
 var player_move_in_progress: bool = false
 
@@ -33,7 +33,7 @@ func _ready() -> void:
 	# Center board on viewport
 	#position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
 	#position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
-	get_viewport().size = Vector2(768,432)
+	#get_viewport().size = Vector2(768,432)
 	draw_board()
 	level_manager = LevelManager.new()
 	load_current_level()
@@ -49,14 +49,14 @@ func _process(_delta: float) -> void:
 
 func draw_board() -> void:
 	# Clear existing tiles from tile_grid if it already exists
-	for row: Array in tile_grid:
+	for row: Array[Node] in tile_grid:
 		for tile: Node in row:
 			tile.queue_free()  # Remove existing tiles
 	tile_grid.clear()  # Clear the grid array
 	
 	for y in range(GRID_SIZE):
 		# For it to be a 2D array
-		var row := []
+		var row: Array[Node] = []
 		for x in range(GRID_SIZE):
 			var tile := CHESS_TILE.instantiate()
 			tile.position = Vector2(x * TILE_SIZE, y * TILE_SIZE)
@@ -307,8 +307,8 @@ func reset_board() -> void:
 func load_current_level() -> void:
 	reset_board()
 	var level_data := level_manager.load_level("level_" + str(current_level))  # Load the current level
-	if current_level == 1:
-		$TutorialMusic.play()
+	#if current_level == 1:
+		#$TutorialMusic.play()
 	if current_level == 4:
 		$TutorialMusic.stop()
 		#$MusicPlayer.stream = preload("res://assets/music/Intense.mp3")
@@ -317,3 +317,8 @@ func load_current_level() -> void:
 		setup_level(level_data)
 	else:
 		print("Level data not found!")
+
+
+
+func _on_texture_button_pressed() -> void:
+	load_current_level()
