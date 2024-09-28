@@ -15,8 +15,8 @@ var turn: int = 0
 var player_move_in_progress: bool = false
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-var current_level: int = 7
-var max_levels: int = 7
+var current_level: int = 8
+var max_levels: int = 8
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
 
@@ -323,7 +323,7 @@ func load_current_level() -> void:
 	var level_data := level_manager.load_level("level_" + str(current_level))  # Load the current level
 	#if current_level == 1:
 		#$TutorialMusic.play()
-	if current_level == 4:
+	if current_level == 7:
 		$TutorialMusic.stop()
 		#$MusicPlayer.stream = preload("res://assets/music/Intense.mp3")
 		$GameMusic.play()
