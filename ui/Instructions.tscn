@@ -18,14 +18,15 @@ metadata/_edit_group_ = true
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -392.0
-offset_right = -352.0
-offset_bottom = 40.0
+offset_left = -304.0
+offset_right = 334.0
+offset_bottom = 224.0
 grow_horizontal = 2
+scale = Vector2(0.951789, 0.951762)
 alignment = 1
 
 [node name="TopHalf" type="Node2D" parent="CanvasLayer/HBoxContainerTopHalf"]
-position = Vector2(64, 23)
+position = Vector2(6, 8)
 metadata/_edit_group_ = true
 
 [node name="Title" type="Label" parent="CanvasLayer/HBoxContainerTopHalf/TopHalf"]
@@ -43,9 +44,10 @@ offset_left = -24.0
 offset_top = 113.0
 offset_right = 680.0
 offset_bottom = 241.0
+scale = Vector2(0.961524, 0.940218)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_wm42f")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 19
 text = "Think of each level as a puzzle, similar to Sokoban rather than Chess.
 
 The goal of each level is to take one of your pawns to the opposite end of the board.
@@ -59,15 +61,14 @@ scale = Vector2(3, 3)
 texture = ExtResource("2_6rbl1")
 
 [node name="BackButton" type="Button" parent="CanvasLayer/HBoxContainerTopHalf/TopHalf"]
-offset_left = -24.0
-offset_right = 10.0
+offset_right = 34.0
 offset_bottom = 25.0
 theme_override_fonts/font = ExtResource("1_wm42f")
 text = "Back"
 
 [node name="PlayButton" type="Button" parent="CanvasLayer/HBoxContainerTopHalf/TopHalf"]
-offset_left = 624.0
-offset_right = 666.0
+offset_left = 576.0
+offset_right = 618.0
 offset_bottom = 25.0
 theme_override_fonts/font = ExtResource("1_wm42f")
 text = "Play"
@@ -87,7 +88,8 @@ grow_vertical = 0
 alignment = 1
 
 [node name="BottomHalf" type="Node2D" parent="CanvasLayer/HBoxContainerBottomHalf"]
-position = Vector2(64, 23)
+position = Vector2(96, 24)
+scale = Vector2(0.883413, 1.0495)
 metadata/_edit_group_ = true
 
 [node name="SubListOne" type="Label" parent="CanvasLayer/HBoxContainerBottomHalf/BottomHalf"]
@@ -97,7 +99,7 @@ offset_right = 318.0
 offset_bottom = 346.0
 theme_override_colors/font_color = Color(0.223529, 0.223529, 0.223529, 1)
 theme_override_fonts/font = ExtResource("1_wm42f")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 14
 text = "Use your other pieces to your advantage: 
 Take out enemy pieces quickly or simply act as bait.	
 
@@ -111,7 +113,7 @@ offset_right = 704.0
 offset_bottom = 329.0
 theme_override_colors/font_color = Color(0.223529, 0.223529, 0.223529, 1)
 theme_override_fonts/font = ExtResource("1_wm42f")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 14
 text = "Think about your enemy's moves before you act:
 You can predict the AI's moves and even trick the AI."
 horizontal_alignment = 1
@@ -123,7 +125,7 @@ offset_right = 600.0
 offset_bottom = 401.0
 theme_override_colors/font_color = Color(0.223529, 0.223529, 0.223529, 1)
 theme_override_fonts/font = ExtResource("1_wm42f")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 14
 text = "The AI will always prioritize a capture if possible, 
 and if not it will move towards our closest piece."
 horizontal_alignment = 1

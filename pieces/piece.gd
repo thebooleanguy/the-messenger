@@ -28,12 +28,12 @@ func set_team(team_color: Team) -> void:
 
 func _ready() -> void:
 	if damaged == true:
-		print("Lives: " + str(lives))
+		#print("Lives: " + str(lives))
 		$Label.position.x = $Sprite2D.position.x - 3
 		$Label.position.y = $Sprite2D.position.y - 33
 		$Label.text = str(lives)
 	else:
-		print("Health full")
+		$Label.queue_free()
 
 func _process(_delta: float) -> void:
 	pass

@@ -32,9 +32,9 @@ metadata/_edit_group_ = true
 
 [node name="Title" type="Label" parent="CanvasLayer/HBoxContainer/Container"]
 offset_left = 304.0
-offset_top = 24.0
+offset_top = 36.0
 offset_right = 419.0
-offset_bottom = 49.0
+offset_bottom = 61.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_shs4l")
 theme_override_font_sizes/font_size = 24
@@ -59,7 +59,7 @@ text = "Use your mouse to select and move pieces.
 Clicking on a selected piece again 
 or on an invalid position will deselect your selected piece.
 
-Press 'R' to Restart a level."
+Press 'R' or click on the label to restart a level."
 horizontal_alignment = 1
 
 [node name="HBoxContainerTopLeft" type="HBoxContainer" parent="CanvasLayer"]

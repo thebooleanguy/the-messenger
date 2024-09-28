@@ -56,9 +56,9 @@ text = "You won"
 horizontal_alignment = 1
 
 [node name="MenuButton" type="Button" parent="CanvasLayer/HBoxContainerTop/Top"]
-offset_left = 680.0
+offset_left = 648.0
 offset_top = 24.0
-offset_right = 722.0
+offset_right = 690.0
 offset_bottom = 49.0
 theme_override_fonts/font = ExtResource("1_jjbl0")
 text = "Menu"

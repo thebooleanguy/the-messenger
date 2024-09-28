@@ -26,9 +26,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -24.0
-offset_top = 64.0
+offset_top = 32.0
 offset_right = -24.0
-offset_bottom = 64.0
+offset_bottom = 32.0
 grow_horizontal = 2
 alignment = 1
 
@@ -72,7 +72,7 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Middle" type="Node2D" parent="CanvasLayer/HBoxContainerMiddle"]
-position = Vector2(-348, -188)
+position = Vector2(-352, -188)
 metadata/_edit_group_ = true
 
 [node name="Pawn" type="Sprite2D" parent="CanvasLayer/HBoxContainerMiddle/Middle"]
@@ -101,17 +101,18 @@ scale = Vector2(3, 3)
 texture = ExtResource("6_uaith")
 
 [node name="Buttons" type="Node2D" parent="CanvasLayer/HBoxContainerMiddle/Middle"]
+position = Vector2(0, -16)
 metadata/_edit_group_ = true
 
 [node name="StartButton" type="Button" parent="CanvasLayer/HBoxContainerMiddle/Middle/Buttons"]
-offset_left = 304.0
+offset_left = 312.0
 offset_top = 304.0
-offset_right = 349.0
-offset_bottom = 331.0
+offset_right = 348.0
+offset_bottom = 327.0
 scale = Vector2(1.8343, 1.63636)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_q05vw")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 14
 text = "Start"
 
 [node name="InstructionsButton" type="Button" parent="CanvasLayer/HBoxContainerMiddle/Middle/Buttons"]

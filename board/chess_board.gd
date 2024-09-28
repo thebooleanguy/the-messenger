@@ -3,10 +3,16 @@ extends Node2D
 class_name ChessBoard
 
 const CHESS_TILE: PackedScene = preload("res://board/ChessTile.tscn")
-var GRID_SIZE: int = 4
+var grid_size: int
 const TILE_SIZE: float = 63
 const CENTERED_TILE_OFFSET := Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
-var CHESSBOARD_SIZE :float = TILE_SIZE * GRID_SIZE
+var chessboard_size :float = TILE_SIZE * grid_size
+
+# Margins
+const MARGIN: float = 20.0
+const TOP_MARGIN: float = 50.0  # More space for labels
+const SCALE_FACTOR: float = 0.9  # Scale down to 90% of the original size
+
 var tile_grid: Array[Array] = []
 var selected_piece: Node = null
 var selected_tile: Node = null
@@ -15,8 +21,8 @@ var turn: int = 0
 var player_move_in_progress: bool = false
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-var current_level: int = 8
-var max_levels: int = 8
+@export var current_level: int = 7
+@export var max_levels: int = 8
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
 
@@ -30,13 +36,10 @@ var piece_scene_map: Dictionary = {
 }
 
 func _ready() -> void:
-	# Center board on viewport
-	#position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
-	#position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
-	#get_viewport().size = Vector2(768,432)
 	draw_board()
 	level_manager = LevelManager.new()
 	load_current_level()
+	_center_and_scale_board()
 
 
 func _process(_delta: float) -> void:
@@ -44,27 +47,33 @@ func _process(_delta: float) -> void:
 		#await get_tree().create_timer(0.1).timeout
 		load_current_level()
 	# Dynamic Resizing
-	position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
-	position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
+	_center_and_scale_board()
 
 func draw_board() -> void:
-	# Clear existing tiles from tile_grid if it already exists
+	# Clear existing tiles from tile_grid if they exist
 	for row: Array[Node] in tile_grid:
 		for tile: Node in row:
 			tile.queue_free()  # Remove existing tiles
 	tile_grid.clear()  # Clear the grid array
 	
-	for y in range(GRID_SIZE):
-		# For it to be a 2D array
+	# Draw the board with scaled tiles
+	for y in range(grid_size):
 		var row: Array[Node] = []
-		for x in range(GRID_SIZE):
+		for x in range(grid_size):
 			var tile := CHESS_TILE.instantiate()
-			tile.position = Vector2(x * TILE_SIZE, y * TILE_SIZE)
+			
+			# Apply scaling and position adjustments with rounding
+			var pos_x: int = round(x * TILE_SIZE * SCALE_FACTOR)
+			var pos_y: int = round(y * TILE_SIZE * SCALE_FACTOR)
+			tile.position = Vector2(pos_x, pos_y)
+			tile.scale = Vector2(SCALE_FACTOR, SCALE_FACTOR)  # Scale each tile
+			
 			tile.grid_position = Vector2(x, y)
 			add_child(tile)
 			tile.connect("tile_clicked", _on_tile_clicked)
 			row.append(tile)
 		tile_grid.append(row)
+
 
 
 func place_piece(piece_scene: PackedScene, pos: Vector2, team: int, damaged: bool, lives: int) -> void:
@@ -98,11 +107,11 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 				#await get_tree().create_timer(0.3).timeout
 				$PieceCaptureSound.play()
 				tile_to.piece.queue_free()
-			# Move piece
-			#piece.position = tile_to.position + CENTERED_TILE_OFFSET
+			# Reduce Lives
 			if piece.damaged:
 				piece.lives -= 1
 				piece.lives_label.text = str(piece.lives)
+			# Move piece
 			tween.tween_property(piece, "position", tile_to.position + CENTERED_TILE_OFFSET, 0.1)
 			tile_to.piece = piece
 			piece.grid_position = tile_to.grid_position
@@ -189,8 +198,8 @@ func ai_move_black_piece() -> void:
 	var black_pieces := []
 
 	# Collect all black pieces
-	for y in range(GRID_SIZE):
-		for x in range(GRID_SIZE):
+	for y in range(grid_size):
+		for x in range(grid_size):
 			var tile: Node = tile_grid[y][x]
 			if tile.piece and tile.piece.team == 0:  # Black piece
 				black_pieces.append(tile.piece)
@@ -216,8 +225,8 @@ func find_closest_capture_or_move(black_pieces: Array) -> Dictionary:
 		var valid_moves: Array = piece.get_valid_moves()
 
 		for move: Vector2 in valid_moves:
-			for y in range(GRID_SIZE):
-				for x in range(GRID_SIZE):
+			for y in range(grid_size):
+				for x in range(grid_size):
 					var tile: Node = tile_grid[y][x]
 
 					# If there's a white piece on this tile (for a capture)
@@ -243,10 +252,6 @@ func find_closest_capture_or_move(black_pieces: Array) -> Dictionary:
 		return best_normal_move
 
 
-
-
-
-
 ### Helper Functions ###
 
 func has_piece_at(pos: Vector2) -> bool:
@@ -262,26 +267,19 @@ func has_enemy_piece_at(pos: Vector2, current_team: int) -> bool:
 	return piece.team != current_team
 	
 func is_within_bounds(pos: Vector2) -> bool:
-	return pos.x >= 0 and pos.x < GRID_SIZE and pos.y >= 0 and pos.y < GRID_SIZE
+	return pos.x >= 0 and pos.x < grid_size and pos.y >= 0 and pos.y < grid_size
 	
 	
 func setup_level(level_data: Dictionary) -> void:
 	# Set the grid size from level data
 	if "grid_size" in level_data:
-		GRID_SIZE = level_data["grid_size"]
+		grid_size = level_data["grid_size"]
 		draw_board()  # Call draw_board to create the board with the new size
-		#reset_board()
 	else:
 		print("Grid size not specified in level data.")
 	lvl_label.text = ("Level " + str(current_level))
 	
-	# Center Board
-	#if GRID_SIZE > 5:
-		#get_viewport().size = Vector2(800,600)
-	#else:
-	#get_viewport().size = Vector2(768,432)
-	position.x = (get_viewport_rect().size.x - CHESSBOARD_SIZE) / 2
-	position.y = (get_viewport_rect().size.y - CHESSBOARD_SIZE) / 2
+	_center_and_scale_board()
 
 	# Place pieces based on level_data
 	for piece_data: Dictionary in level_data["pieces"]:
@@ -291,7 +289,7 @@ func setup_level(level_data: Dictionary) -> void:
 		if piece_data["damaged"]:
 			piece_damaged = true
 			piece_lives = piece_data["lives"]
-		#var piece_lives: int = piece_data["lives"]
+
 		if piece_type in piece_scene_map:
 			var piece_scene: PackedScene = piece_scene_map[piece_type]
 			
@@ -311,8 +309,8 @@ func reset_board() -> void:
 	selected_tile = null
 	valid_move_tiles = []
 	
-	for y in range(GRID_SIZE):
-		for x in range(GRID_SIZE):
+	for y in range(grid_size):
+		for x in range(grid_size):
 			var tile: Node = tile_grid[y][x]
 			if tile.piece:
 				tile.piece.queue_free()  # Remove the piece from the scene
@@ -320,12 +318,10 @@ func reset_board() -> void:
 				
 func load_current_level() -> void:
 	reset_board()
-	var level_data := level_manager.load_level("level_" + str(current_level))  # Load the current level
-	#if current_level == 1:
-		#$TutorialMusic.play()
+	var level_data := level_manager.load_level("level_" + str(current_level))
+
 	if current_level == 7:
 		$TutorialMusic.stop()
-		#$MusicPlayer.stream = preload("res://assets/music/Intense.mp3")
 		$GameMusic.play()
 	if level_data.size() > 0:
 		setup_level(level_data)
@@ -336,3 +332,29 @@ func load_current_level() -> void:
 
 func _on_texture_button_pressed() -> void:
 	load_current_level()
+	
+	
+# Center Board
+func _center_and_scale_board() -> void:
+	var board_size: float = grid_size * TILE_SIZE
+	
+	# Define the margins (adjust these values as needed)
+	var side_margin: float = 10
+	var top_margin: float = 30
+	
+	# Calculate available space considering margins
+	var available_width: float = get_viewport_rect().size.x - 2 * side_margin
+	var available_height: float = get_viewport_rect().size.y - top_margin - side_margin
+	
+	# Scale the board based on the smaller available space
+	var scale_factor: float = min(available_width / board_size, available_height / board_size)
+	
+	# Apply the scaling
+	scale = Vector2(scale_factor, scale_factor)
+	
+	# Calculate the new scaled board size
+	var scaled_board_size: float = board_size * scale_factor
+	
+	# Center the chessboard within the available space
+	position.x = (get_viewport_rect().size.x - scaled_board_size) / 2 + side_margin
+	position.y = (get_viewport_rect().size.y - scaled_board_size) / 2 + top_margin

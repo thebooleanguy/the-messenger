@@ -1,0 +1,11 @@
+{
+  "grid_size": 8,
+  "pieces": [
+	{"type": "Pawn", "position": [1, 2], "team": 0, "damaged": false},
+	{"type": "Pawn", "position": [3, 2], "team": 0, "damaged": false},
+	{"type": "Pawn", "position": [4, 2], "team": 0, "damaged": false},
+	{"type": "Knight", "position": [2, 1], "team": 1, "damaged": true, "lives": 2},
+	{"type": "Bishop", "position": [1, 4], "team": 1, "damaged": true, "lives": 1},
+	{"type": "Pawn", "position": [4, 4], "team": 1, "damaged": false}
+  ]
+}
