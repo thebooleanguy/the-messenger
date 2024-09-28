@@ -1,8 +1,8 @@
 {
   "grid_size": 4,
   "pieces": [
-	{"type": "Pawn", "position": [0, 1], "team": 0},
-	{"type": "Pawn", "position": [1, 0], "team": 0},
-	{"type": "Pawn", "position": [2, 3], "team": 1}
+	{"type": "Pawn", "position": [0, 1], "team": 0, "damaged": false},
+	{"type": "Pawn", "position": [1, 0], "team": 0, "damaged": false},
+	{"type": "Pawn", "position": [2, 3], "team": 1, "damaged": false}
   ]
 }

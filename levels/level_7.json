@@ -1,0 +1,7 @@
+{
+  "grid_size": 3,
+  "pieces": [
+	{"type": "Queen", "position": [0, 0], "team": 1, "damaged": true, "lives": 1},
+	{"type": "Queen", "position": [0, 2], "team": 0, "damaged": false}
+  ]
+}

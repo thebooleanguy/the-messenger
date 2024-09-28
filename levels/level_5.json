@@ -1,9 +1,9 @@
 {
   "grid_size": 4,
   "pieces": [
-	{"type": "Knight", "position": [0, 0], "team": 0},
-	{"type": "Knight", "position": [3, 0], "team": 0},
-	{"type": "Pawn", "position": [1, 3], "team": 1},
-	{"type": "Knight", "position": [2, 3], "team": 1},
+	{"type": "Knight", "position": [0, 0], "team": 0, "damaged": false},
+	{"type": "Knight", "position": [3, 0], "team": 0, "damaged": false},
+	{"type": "Pawn", "position": [1, 3], "team": 1, "damaged": false},
+	{"type": "Knight", "position": [2, 3], "team": 1, "damaged": false},
   ]
 }

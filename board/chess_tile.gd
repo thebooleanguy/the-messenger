@@ -29,6 +29,9 @@ func _on_color_rect_mouse_exited() -> void:
 
 func _on_color_rect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("select") and board.turn == 1 and (!piece or piece.team == 1 or (board.player_move_in_progress and piece.team == 0)):
+		if piece:
+			if piece.damaged == true and piece.lives <= 0:
+				return
 		tile_clicked.emit(grid_position)
 		if not is_selected:
 			color_rect.color = Color(0.5, 0.5, 0.5, 0.8)

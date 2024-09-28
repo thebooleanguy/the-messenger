@@ -15,8 +15,8 @@ var turn: int = 0
 var player_move_in_progress: bool = false
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-var current_level: int = 1
-var max_levels: int = 6
+var current_level: int = 7
+var max_levels: int = 7
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
 
@@ -67,7 +67,7 @@ func draw_board() -> void:
 		tile_grid.append(row)
 
 
-func place_piece(piece_scene: PackedScene, pos: Vector2, team: int) -> void:
+func place_piece(piece_scene: PackedScene, pos: Vector2, team: int, damaged: bool, lives: int) -> void:
 	if is_within_bounds(pos):
 		var tile: Node = tile_grid[pos.y][pos.x]
 		if !tile.piece:
@@ -75,6 +75,8 @@ func place_piece(piece_scene: PackedScene, pos: Vector2, team: int) -> void:
 			piece_instance.position = tile.position + CENTERED_TILE_OFFSET
 			piece_instance.set_team(team)
 			piece_instance.grid_position = tile.grid_position
+			piece_instance.damaged = damaged
+			piece_instance.lives = lives
 			add_child(piece_instance)
 			tile.piece = piece_instance
 	else:
@@ -88,6 +90,9 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 		var tile_to: Node = tile_grid[new_pos.y][new_pos.x] 
 		var piece: Node = tile_from.piece
 		if piece:
+			# Out of lives
+			if ((piece.damaged == true) and (piece.lives <= 0)):
+				return
 			# Capture piece
 			if tile_to.piece:
 				#await get_tree().create_timer(0.3).timeout
@@ -95,6 +100,9 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 				tile_to.piece.queue_free()
 			# Move piece
 			#piece.position = tile_to.position + CENTERED_TILE_OFFSET
+			if piece.damaged:
+				piece.lives -= 1
+				piece.lives_label.text = str(piece.lives)
 			tween.tween_property(piece, "position", tile_to.position + CENTERED_TILE_OFFSET, 0.1)
 			tile_to.piece = piece
 			piece.grid_position = tile_to.grid_position
@@ -278,6 +286,12 @@ func setup_level(level_data: Dictionary) -> void:
 	# Place pieces based on level_data
 	for piece_data: Dictionary in level_data["pieces"]:
 		var piece_type: String = piece_data["type"]
+		var piece_damaged: bool = false
+		var piece_lives: int = 0
+		if piece_data["damaged"]:
+			piece_damaged = true
+			piece_lives = piece_data["lives"]
+		#var piece_lives: int = piece_data["lives"]
 		if piece_type in piece_scene_map:
 			var piece_scene: PackedScene = piece_scene_map[piece_type]
 			
@@ -285,7 +299,7 @@ func setup_level(level_data: Dictionary) -> void:
 			var position_array: Array = piece_data["position"]
 			var pos: Vector2 = Vector2(position_array[0], position_array[1])
 			
-			place_piece(piece_scene, pos, piece_data["team"])
+			place_piece(piece_scene, pos, piece_data["team"], piece_damaged, piece_lives)
 		else:
 			print("Unknown piece type: " + piece_type)
 
