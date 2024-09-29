@@ -20,8 +20,10 @@ var valid_move_tiles: Array[Vector2] = []
 var turn: int = 0
 var player_move_in_progress: bool = false
 
+@onready var hint_label: Node = $CanvasLayer/HBoxContainerCenterRight/ControlHintLabel
+
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-@export var current_level: int = 7
+@export var current_level: int = 1
 @export var max_levels: int = 8
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
@@ -308,6 +310,7 @@ func reset_board() -> void:
 	selected_piece = null
 	selected_tile = null
 	valid_move_tiles = []
+	hint_label.text = ""
 	
 	for y in range(grid_size):
 		for x in range(grid_size):
@@ -327,6 +330,8 @@ func load_current_level() -> void:
 		setup_level(level_data)
 	else:
 		print("Level data not found!")
+	
+	display_hints()
 
 
 
@@ -358,3 +363,15 @@ func _center_and_scale_board() -> void:
 	# Center the chessboard within the available space
 	position.x = (get_viewport_rect().size.x - scaled_board_size) / 2 + side_margin
 	position.y = (get_viewport_rect().size.y - scaled_board_size) / 2 + top_margin
+
+
+func display_hints() -> void:
+	#var tween: Tween = create_tween()
+	if current_level == 1:
+		await get_tree().create_timer(2).timeout
+		hint_label.text = "Use mouse to move"
+		await get_tree().create_timer(2).timeout
+		hint_label.text = "Get a pawn to the other side of the board"
+		await get_tree().create_timer(2).timeout
+		hint_label.text = ""
+	pass
