@@ -23,7 +23,7 @@ var player_move_in_progress: bool = false
 @onready var hint_label: Node = $CanvasLayer/HBoxContainerCenterRight/ControlHintLabel
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-@export var current_level: int = 9
+static var current_level: int = 8
 @export var max_levels: int = 9
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
@@ -42,6 +42,12 @@ func _ready() -> void:
 	level_manager = LevelManager.new()
 	load_current_level()
 	_center_and_scale_board()
+	
+	hint_label.visible_characters = 0
+	hint_label.text = ""
+	display_hints()
+	#await(get_tree().create_timer(2))
+	#$TutorialMusic.play()
 
 
 func _process(_delta: float) -> void:
@@ -167,6 +173,7 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 						if current_level < max_levels:
 							current_level += 1
 							load_current_level()
+							display_hints()
 						# Game Complete
 						else:
 							get_tree().change_scene_to_file("res://ui/GameOver.tscn")
@@ -279,7 +286,7 @@ func setup_level(level_data: Dictionary) -> void:
 		draw_board()  # Call draw_board to create the board with the new size
 	else:
 		print("Grid size not specified in level data.")
-	lvl_label.text = ("Level " + str(current_level))
+	lvl_label.text = ("Level " + str(current_level) + "/15")
 	
 	_center_and_scale_board()
 
@@ -310,7 +317,6 @@ func reset_board() -> void:
 	selected_piece = null
 	selected_tile = null
 	valid_move_tiles = []
-	hint_label.text = ""
 	
 	for y in range(grid_size):
 		for x in range(grid_size):
@@ -318,11 +324,13 @@ func reset_board() -> void:
 			if tile.piece:
 				tile.piece.queue_free()  # Remove the piece from the scene
 				tile.piece = null  # Clear the reference
+
 				
 func load_current_level() -> void:
 	reset_board()
 	var level_data := level_manager.load_level("level_" + str(current_level))
-
+	if current_level == 2:
+		$TutorialMusic.play()
 	if current_level == 7:
 		$TutorialMusic.stop()
 		$GameMusic.play()
@@ -331,7 +339,7 @@ func load_current_level() -> void:
 	else:
 		print("Level data not found!")
 	
-	display_hints()
+	
 
 
 
@@ -366,12 +374,28 @@ func _center_and_scale_board() -> void:
 
 
 func display_hints() -> void:
-	#var tween: Tween = create_tween()
 	if current_level == 1:
-		await get_tree().create_timer(2).timeout
-		hint_label.text = "Use mouse to move"
-		await get_tree().create_timer(2).timeout
-		hint_label.text = "Get a pawn to the other side of the board"
-		await get_tree().create_timer(2).timeout
-		hint_label.text = ""
-	pass
+		await(display_hint(2, 2, "Use your mouse to move a pawn to the other side", hint_label, 3))
+		#await(display_hint(1, 3, "Take a pawn to the other side", hint_label, 2))
+	if current_level == 3:
+		await(display_hint(2, 3, "Use other pieces strategically to aid your pawn", hint_label, 3))
+	if current_level == 6:
+		await(display_hint(4, 2, "Make the right kind of sacrifice", hint_label, 2))
+	if current_level == 7:
+		await(display_hint(2, 3, "Numbered pieces have a limited number of turns left", hint_label, 3))
+		
+	
+	
+func display_hint(start_delay: int, end_delay: int, text_content: String, label: Node, typing_speed: float) -> void:
+	await get_tree().create_timer(start_delay).timeout
+	hint_label.text = text_content
+	$UISound.stream.loop = true
+	$UISound.play()
+	var tween: Tween = create_tween()
+	tween.tween_property(label, "visible_characters", text_content.length(), typing_speed)
+	await get_tree().create_timer(typing_speed).timeout
+	$UISound.stream.loop = false
+	$UISound.stop()
+	await get_tree().create_timer(end_delay).timeout
+	hint_label.visible_characters = 0
+	hint_label.text = ""

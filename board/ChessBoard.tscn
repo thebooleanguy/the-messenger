@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cbxfcbs8na24l"]
+[gd_scene load_steps=9 format=3 uid="uid://cbxfcbs8na24l"]
 
 [ext_resource type="Script" path="res://board/chess_board.gd" id="1_bdnp4"]
 [ext_resource type="AudioStream" uid="uid://vxb6eytnyj6p" path="res://assets/music/Rising.mp3" id="2_3qn54"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://ujpmyjmm75d7" path="res://assets/sound-effects/piece_move.mp3" id="5_w62pu"]
 [ext_resource type="AudioStream" uid="uid://77ca0kpc3kgg" path="res://assets/sound-effects/win_sound.mp3" id="6_4mrgc"]
 [ext_resource type="FontFile" uid="uid://de2xva1tsv2cl" path="res://assets/fonts/VT323/VT323-Regular.ttf" id="7_a5lgn"]
+[ext_resource type="PackedScene" uid="uid://d1m1bgf6din3i" path="res://ui/UISound.tscn" id="7_rq3ad"]
 
 [node name="ChessBoard" type="Node2D"]
 position = Vector2(18, 0)
@@ -15,7 +16,6 @@ metadata/_edit_group_ = true
 
 [node name="TutorialMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_3qn54")
-autoplay = true
 parameters/looping = true
 
 [node name="GameMusic" type="AudioStreamPlayer" parent="."]
@@ -36,6 +36,9 @@ stream = ExtResource("6_4mrgc")
 volume_db = 6.0
 playback_type = 2
 
+[node name="UISound" parent="." instance=ExtResource("7_rq3ad")]
+playback_type = 0
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HBoxContainerTopLeft" type="HBoxContainer" parent="CanvasLayer"]
@@ -49,7 +52,7 @@ metadata/_edit_group_ = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("7_a5lgn")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Level"
 
 [node name="ControlTopRight" type="Control" parent="CanvasLayer"]
@@ -97,9 +100,9 @@ anchor_left = 0.898
 anchor_top = 0.5
 anchor_right = 0.898
 anchor_bottom = 0.5
-offset_left = -27.36
+offset_left = -34.36
 offset_top = -29.0
-offset_right = 27.64
+offset_right = 20.64
 offset_bottom = 51.0
 grow_horizontal = 0
 grow_vertical = 2
@@ -111,8 +114,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("7_a5lgn")
 theme_override_font_sizes/font_size = 12
-text = "Use mouse to move"
 horizontal_alignment = 1
-autowrap_mode = 3
+autowrap_mode = 2
 
 [connection signal="pressed" from="CanvasLayer/ControlTopRight/TextureButton" to="." method="_on_texture_button_pressed"]
