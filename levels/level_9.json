@@ -1,11 +1,13 @@
 {
-  "grid_size": 8,
+  "grid_size": 5,
   "pieces": [
-	{"type": "Pawn", "position": [0, 0], "team": 0, "damaged": false},
-	{"type": "Pawn", "position": [1, 0], "team": 0, "damaged": false},
-	{"type": "Pawn", "position": [2, 0], "team": 0, "damaged": false},
-	{"type": "Knight", "position": [2, 4], "team": 1, "damaged": true, "lives": 2},
-	{"type": "Bishop", "position": [5, 6], "team": 1, "damaged": true, "lives": 1},
-	{"type": "Pawn", "position": [7, 7], "team": 1, "damaged": false}
+	{"type": "Rook", "position": [2, 0], "team": 0, "damaged": false},
+	{"type": "Rook", "position": [2, 0], "team": 0, "damaged": false},
+	{"type": "Queen", "position": [3, 4], "team": 0, "damaged": true, "lives": 4},
+	
+	{"type": "Bishop", "position": [4, 0], "team": 1, "damaged": true, "lives": 2},
+	{"type": "Knight", "position": [1, 3], "team": 1, "damaged": true, "lives": 2},
+	{"type": "Pawn", "position": [2, 2], "team": 1, "damaged": false},
+	{"type": "Bishop", "position": [0, 3], "team": 1, "damaged": true, "lives": 2},
   ]
 }

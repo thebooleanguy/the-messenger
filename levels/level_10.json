@@ -1,0 +1,14 @@
+{
+  "grid_size": 5,
+  "pieces": [
+	{"type": "Rook", "position": [0, 0], "team": 0, "damaged": true, "lives": 1},
+	{"type": "Rook", "position": [1, 0], "team": 0, "damaged": true, "lives": 2},
+	{"type": "Rook", "position": [2, 0], "team": 0, "damaged": true, "lives": 3},
+	{"type": "Rook", "position": [3, 0], "team": 0, "damaged": true, "lives": 4},
+	{"type": "Rook", "position": [4, 0], "team": 0, "damaged": true, "lives": 5},
+	
+	{"type": "Queen", "position": [0, 2], "team": 1, "damaged": false},
+	{"type": "Queen", "position": [0, 3], "team": 1, "damaged": true, "lives": 4},
+	{"type": "Pawn", "position": [0, 4], "team": 1, "damaged": false}
+  ]
+}

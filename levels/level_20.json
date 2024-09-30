@@ -1,0 +1,17 @@
+{
+  "grid_size": 8,
+  "pieces": [
+	{"type": "Bishop", "position": [0, 1], "team": 0, "damaged": false},
+	{"type": "Bishop", "position": [1, 2], "team": 0, "damaged": false},
+	{"type": "Bishop", "position": [6, 2], "team": 0, "damaged": false},
+	{"type": "Bishop", "position": [7, 1], "team": 0, "damaged": false},
+	
+	{"type": "Knight", "position": [1, 6], "team": 1, "damaged": false},
+	{"type": "Pawn", "position": [0, 7], "team": 1, "damaged": false},
+	{"type": "Pawn", "position": [2, 7], "team": 1, "damaged": false},
+	
+	{"type": "Knight", "position": [6, 6], "team": 1, "damaged": false},
+	{"type": "Pawn", "position": [5, 7], "team": 1, "damaged": false},
+	{"type": "Pawn", "position": [7, 7], "team": 1, "damaged": false}
+  ]
+}

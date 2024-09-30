@@ -12,7 +12,7 @@ enum Team {
 @onready var lives_label: Node = $Label
 var grid_position :Vector2 = Vector2.ZERO
 var damaged: bool = false
-var lives: int = 0
+var lives: int = 99
 
 # Override this method
 func get_valid_moves() -> Array[Vector2]:

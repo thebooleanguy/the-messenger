@@ -6,6 +6,11 @@ func get_valid_moves() -> Array[Vector2]:
 	var valid_moves: Array[Vector2] = []
 	var current_pos := grid_position
 
+	## Out of Lives
+	#if damaged == true and lives < 0:
+		#print("???")
+		#return valid_moves
+
 	# Rook moves vertically and horizontally
 	# Check vertical (up and down)
 	for y_offset: int in [-1, 1]:  # -1 for up, 1 for down

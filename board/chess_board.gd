@@ -23,7 +23,7 @@ var player_move_in_progress: bool = false
 @onready var hint_label: Node = $CanvasLayer/HBoxContainerCenterRight/ControlHintLabel
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-static var current_level: int = 8
+@onready var current_level: int = 10
 @export var max_levels: int = 9
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
@@ -210,7 +210,7 @@ func ai_move_black_piece() -> void:
 	for y in range(grid_size):
 		for x in range(grid_size):
 			var tile: Node = tile_grid[y][x]
-			if tile.piece and tile.piece.team == 0:  # Black piece
+			if tile.piece and tile.piece.team == 0 and tile.piece.lives > 0:  # Black piece
 				black_pieces.append(tile.piece)
 
 	if black_pieces.size() > 0:

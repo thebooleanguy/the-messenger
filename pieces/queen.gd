@@ -6,6 +6,10 @@ func get_valid_moves() -> Array[Vector2]:
 	var valid_moves: Array[Vector2] = []
 	var current_pos := grid_position
 
+	## Out of Lives
+	#if damaged == true and lives < 0:
+		#return valid_moves 
+
 	# Directions for movement: vertical, horizontal, and diagonal
 	var directions := [
 		Vector2(0, 1),   # Up
