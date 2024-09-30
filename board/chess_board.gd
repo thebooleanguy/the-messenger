@@ -5,7 +5,7 @@ class_name ChessBoard
 const CHESS_TILE: PackedScene = preload("res://board/ChessTile.tscn")
 var grid_size: int
 const TILE_SIZE: float = 63
-const CENTERED_TILE_OFFSET := Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
+const CENTERED_TILE_OFFSET := Vector2((TILE_SIZE / 2) - 2, (TILE_SIZE / 2) + 2)
 var chessboard_size :float = TILE_SIZE * grid_size
 
 # Margins
@@ -23,8 +23,8 @@ var player_move_in_progress: bool = false
 @onready var hint_label: Node = $CanvasLayer/HBoxContainerCenterRight/ControlHintLabel
 
 @onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-@export var current_level: int = 1
-@export var max_levels: int = 8
+@export var current_level: int = 9
+@export var max_levels: int = 9
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
 

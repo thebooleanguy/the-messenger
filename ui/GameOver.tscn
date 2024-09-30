@@ -21,7 +21,7 @@ parameters/looping = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HBoxContainerTop" type="HBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainerTop" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -30,10 +30,12 @@ offset_right = -384.0
 grow_horizontal = 2
 alignment = 1
 
-[node name="Top" type="Node2D" parent="CanvasLayer/HBoxContainerTop"]
+[node name="Top" type="Node2D" parent="CanvasLayer/VBoxContainerTop"]
+position = Vector2(200, 0)
+scale = Vector2(0.5, 0.5)
 metadata/_edit_group_ = true
 
-[node name="Title" type="Label" parent="CanvasLayer/HBoxContainerTop/Top"]
+[node name="Title" type="Label" parent="CanvasLayer/VBoxContainerTop/Top"]
 offset_left = 272.0
 offset_top = 40.0
 offset_right = 438.0
@@ -44,7 +46,7 @@ theme_override_font_sizes/font_size = 32
 text = "Game Over"
 horizontal_alignment = 1
 
-[node name="SubTitle" type="Label" parent="CanvasLayer/HBoxContainerTop/Top"]
+[node name="SubTitle" type="Label" parent="CanvasLayer/VBoxContainerTop/Top"]
 offset_left = 248.0
 offset_top = 80.0
 offset_right = 456.0
@@ -55,31 +57,33 @@ theme_override_font_sizes/font_size = 20
 text = "You won"
 horizontal_alignment = 1
 
-[node name="MenuButton" type="Button" parent="CanvasLayer/HBoxContainerTop/Top"]
-offset_left = 648.0
-offset_top = 24.0
-offset_right = 690.0
-offset_bottom = 49.0
+[node name="MenuButton" type="Button" parent="CanvasLayer/VBoxContainerTop/Top"]
+offset_left = 608.0
+offset_top = 16.0
+offset_right = 650.0
+offset_bottom = 41.0
 theme_override_fonts/font = ExtResource("1_jjbl0")
 text = "Menu"
 
-[node name="HBoxContainerCenter" type="HBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainerCenter" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -376.0
-offset_top = -200.0
-offset_right = -336.0
-offset_bottom = -160.0
+offset_left = -160.0
+offset_top = -26.0
+offset_right = 160.0
+offset_bottom = 90.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Center" type="Node2D" parent="CanvasLayer/HBoxContainerCenter"]
+[node name="Center" type="Node2D" parent="CanvasLayer/VBoxContainerCenter"]
+position = Vector2(-24, -64)
+scale = Vector2(0.5, 0.5)
 
-[node name="SubTitleBottom" type="Label" parent="CanvasLayer/HBoxContainerCenter/Center"]
+[node name="SubTitleBottom" type="Label" parent="CanvasLayer/VBoxContainerCenter/Center"]
 offset_left = 152.0
 offset_top = 328.0
 offset_right = 592.0
@@ -90,29 +94,29 @@ theme_override_font_sizes/font_size = 20
 text = "The townspeople can evacuate safely due to your efforts."
 horizontal_alignment = 1
 
-[node name="Pawn" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
+[node name="Pawn" type="Sprite2D" parent="CanvasLayer/VBoxContainerCenter/Center"]
 position = Vector2(352, 224)
 scale = Vector2(8, 8)
 texture = ExtResource("2_ftq3s")
 
-[node name="Pawn2" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
+[node name="Pawn2" type="Sprite2D" parent="CanvasLayer/VBoxContainerCenter/Center"]
 position = Vector2(456, 184)
 scale = Vector2(6, 6)
 texture = ExtResource("2_ftq3s")
 
-[node name="Pawn5" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
+[node name="Pawn5" type="Sprite2D" parent="CanvasLayer/VBoxContainerCenter/Center"]
 position = Vector2(264, 184)
 scale = Vector2(5, 5)
 texture = ExtResource("2_ftq3s")
 
-[node name="Bishop" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
+[node name="Bishop" type="Sprite2D" parent="CanvasLayer/VBoxContainerCenter/Center"]
 position = Vector2(120, 208)
 scale = Vector2(5, 5)
 texture = ExtResource("3_pk3oe")
 
-[node name="Bishop2" type="Sprite2D" parent="CanvasLayer/HBoxContainerCenter/Center"]
+[node name="Bishop2" type="Sprite2D" parent="CanvasLayer/VBoxContainerCenter/Center"]
 position = Vector2(608, 216)
 scale = Vector2(5, 5)
 texture = ExtResource("3_pk3oe")
 
-[connection signal="pressed" from="CanvasLayer/HBoxContainerTop/Top/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainerTop/Top/MenuButton" to="." method="_on_menu_button_pressed"]

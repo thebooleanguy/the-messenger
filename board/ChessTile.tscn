@@ -7,10 +7,11 @@
 script = ExtResource("1_r61rm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
+texture_filter = 2
 position = Vector2(32, 32)
 texture = ExtResource("2_2lxhk")
 offset = Vector2(1, 1)
+region_filter_clip_enabled = true
 
 [node name="ColorRect" type="ColorRect" parent="Sprite2D"]
 offset_left = -32.0

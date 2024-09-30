@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d1m1bgf6din3i" path="res://ui/UISound.tscn" id="4_tjm3n"]
 
 [node name="Controls" type="Node2D"]
+position = Vector2(-8, -8)
 script = ExtResource("1_klr2h")
 metadata/_edit_group_ = true
 
@@ -19,15 +20,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -384.0
-offset_top = -208.0
-offset_right = -344.0
-offset_bottom = -168.0
+offset_left = -160.0
+offset_top = -42.0
+offset_right = 160.0
+offset_bottom = 90.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
 [node name="Container" type="Node2D" parent="CanvasLayer/HBoxContainer"]
+position = Vector2(-32, -40)
+scale = Vector2(0.5, 0.5)
 metadata/_edit_group_ = true
 
 [node name="Title" type="Label" parent="CanvasLayer/HBoxContainer/Container"]
@@ -63,31 +66,35 @@ Press 'R' or click on the label to restart a level."
 horizontal_alignment = 1
 
 [node name="HBoxContainerTopLeft" type="HBoxContainer" parent="CanvasLayer"]
-offset_left = 24.0
-offset_top = 24.0
-offset_right = 58.0
-offset_bottom = 49.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 42.0
+offset_bottom = 33.0
+scale = Vector2(0.7, 0.7)
 alignment = 1
 
 [node name="BackButton" type="Button" parent="CanvasLayer/HBoxContainerTopLeft"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_shs4l")
+theme_override_font_sizes/font_size = 12
 text = "Back"
 
 [node name="HBoxContainerTopRight" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -72.0
-offset_top = 25.0
-offset_right = -38.0
-offset_bottom = 50.0
+offset_left = -32.0
+offset_top = 8.0
+offset_right = 2.0
+offset_bottom = 33.0
 grow_horizontal = 0
+scale = Vector2(0.7, 0.7)
 alignment = 1
 
 [node name="PlayButton" type="Button" parent="CanvasLayer/HBoxContainerTopRight"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_shs4l")
+theme_override_font_sizes/font_size = 10
 text = "Play"
 
 [connection signal="pressed" from="CanvasLayer/HBoxContainerTopLeft/BackButton" to="." method="_on_back_button_pressed"]
