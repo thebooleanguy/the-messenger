@@ -5,4 +5,3 @@
 [node name="UISound" type="AudioStreamPlayer"]
 stream = ExtResource("1_4qsse")
 volume_db = -19.0
-playback_type = 2

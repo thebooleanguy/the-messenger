@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="The Messenger"
-run/main_scene="res://board/ChessBoard.tscn"
+run/main_scene="res://ui/Intro.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="res://assets/art/splash.png"
@@ -25,12 +25,16 @@ gdscript/warnings/untyped_declaration=1
 
 window/size/viewport_width=320
 window/size/viewport_height=180
-window/size/window_width_override=640
-window/size/window_height_override=360
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 display_server/driver.linuxbsd="wayland"
+
+[editor_plugins]
+
+enabled=PackedStringArray()
 
 [input]
 

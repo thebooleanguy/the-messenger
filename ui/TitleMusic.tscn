@@ -5,5 +5,4 @@
 [node name="TitleMusic" type="AudioStreamPlayer"]
 stream = ExtResource("1_gus32")
 autoplay = true
-playback_type = 2
 parameters/looping = true

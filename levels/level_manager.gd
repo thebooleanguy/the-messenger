@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 # Load level data from a JSON file
-func load_level(level_name: String) -> Dictionary:
+func load_level(level_name: String) -> Dictionary[Variant, Variant]:
 	var file: FileAccess = FileAccess.open("res://levels/" + level_name + ".json", FileAccess.READ)
 	
 	if !file:

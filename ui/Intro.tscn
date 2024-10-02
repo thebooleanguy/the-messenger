@@ -167,10 +167,10 @@ position = Vector2(0, -432)
 metadata/_edit_group_ = true
 
 [node name="BottomTextLeft" type="Label" parent="CanvasLayer/VBoxContainerBottom/Bottom"]
-offset_left = 40.0
-offset_top = 392.0
-offset_right = 489.0
-offset_bottom = 429.0
+offset_left = 132.0
+offset_top = 396.0
+offset_right = 523.0
+offset_bottom = 433.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_q05vw")
 theme_override_font_sizes/font_size = 16
@@ -180,10 +180,10 @@ text = "Your king has betrayed you and you must warn the townspeople.
 horizontal_alignment = 1
 
 [node name="BottomTextRight" type="Label" parent="CanvasLayer/VBoxContainerBottom/Bottom"]
-offset_left = 256.0
-offset_top = 408.0
-offset_right = 705.0
-offset_bottom = 445.0
+offset_left = 208.0
+offset_top = 416.0
+offset_right = 657.0
+offset_bottom = 440.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_q05vw")
 theme_override_font_sizes/font_size = 16

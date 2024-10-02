@@ -20,16 +20,27 @@ var valid_move_tiles: Array[Vector2] = []
 var turn: int = 0
 var player_move_in_progress: bool = false
 
-@onready var hint_label: Node = $CanvasLayer/HBoxContainerCenterRight/ControlHintLabel
+# Labels
+@onready var hint_label: Label = $CanvasLayer/HBoxContainerCenterRight/ControlHintLabel
+@onready var lvl_label: Label = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
+# Music
+@onready var tutorial_music: AudioStreamPlayer = $TutorialMusic
+@onready var game_music: AudioStreamPlayer = $GameMusic
+# SoundEffects
+@onready var piece_capture_sound: AudioStreamPlayer = $PieceCaptureSound
+@onready var piece_move_sound: AudioStreamPlayer = $PieceMoveSound
+@onready var win_sound: AudioStreamPlayer = $WinSound
+@onready var ui_sound_loop: AudioStreamPlayer = $UISoundLoop
 
-@onready var lvl_label: Node = $CanvasLayer/HBoxContainerTopLeft/LevelLabel
-@onready var current_level: int = 10
-@export var max_levels: int = 9
+
+@export var current_level: int = 1
+@export var max_levels: int = 11
 const LevelManager = preload("res://levels/level_manager.gd")
 var level_manager: LevelManager
 
+
 # Create a mapping of piece types to their scenes
-var piece_scene_map: Dictionary = {
+var piece_scene_map: Dictionary[String, Variant] = {
 	"Pawn": preload("res://pieces/Pawn.tscn"),
 	"Rook": preload("res://pieces/Rook.tscn"),
 	"Queen": preload("res://pieces/Queen.tscn"),
@@ -45,9 +56,9 @@ func _ready() -> void:
 	
 	hint_label.visible_characters = 0
 	hint_label.text = ""
-	display_hints()
+	script_events()
 	#await(get_tree().create_timer(2))
-	#$TutorialMusic.play()
+	#tutorial_music.play()
 
 
 func _process(_delta: float) -> void:
@@ -113,7 +124,7 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 			# Capture piece
 			if tile_to.piece:
 				#await get_tree().create_timer(0.3).timeout
-				$PieceCaptureSound.play()
+				piece_capture_sound.play()
 				tile_to.piece.queue_free()
 			# Reduce Lives
 			if piece.damaged:
@@ -124,8 +135,8 @@ func move_piece(curr_pos: Vector2, new_pos: Vector2) -> void:
 			tile_to.piece = piece
 			piece.grid_position = tile_to.grid_position
 			tile_from.piece = null
-			if !$PieceMoveSound.playing:
-				$PieceMoveSound.play()
+			if !piece_move_sound.playing:
+				piece_move_sound.play()
 	else:
 		print("Out of bounds")
 
@@ -169,11 +180,11 @@ func _on_tile_clicked(grid_pos: Vector2) -> void:
 				if is_instance_valid(selected_piece):
 					if (grid_pos.y == 0) and (selected_piece is Pawn) and (selected_piece.team == 1):
 						print("You've won! Loading next level...")
-						$WinSound.play()
+						win_sound.play()
 						if current_level < max_levels:
 							current_level += 1
 							load_current_level()
-							display_hints()
+							script_events()
 						# Game Complete
 						else:
 							get_tree().change_scene_to_file("res://ui/GameOver.tscn")
@@ -222,12 +233,12 @@ func ai_move_black_piece() -> void:
 
 
 # Helper function to prioritize the closest capture first, otherwise move towards the closest white piece
-func find_closest_capture_or_move(black_pieces: Array) -> Dictionary:
+func find_closest_capture_or_move(black_pieces: Array) -> Dictionary[String, Variant]:
 	#var _best_move: Dictionary
 	var closest_capture_distance: float = INF
 	var closest_move_distance: float = INF
-	var best_capture: Dictionary
-	var best_normal_move: Dictionary
+	var best_capture: Dictionary[String, Variant]
+	var best_normal_move: Dictionary[String, Variant]
 
 	# Loop through all black pieces and their valid moves
 	for piece: Node in black_pieces:
@@ -279,22 +290,22 @@ func is_within_bounds(pos: Vector2) -> bool:
 	return pos.x >= 0 and pos.x < grid_size and pos.y >= 0 and pos.y < grid_size
 	
 	
-func setup_level(level_data: Dictionary) -> void:
+func setup_level(level_data: Dictionary[Variant, Variant]) -> void:
 	# Set the grid size from level data
 	if "grid_size" in level_data:
 		grid_size = level_data["grid_size"]
 		draw_board()  # Call draw_board to create the board with the new size
 	else:
 		print("Grid size not specified in level data.")
-	lvl_label.text = ("Level " + str(current_level) + "/15")
+	lvl_label.text = ("Level " + str(current_level) + "/" + str(max_levels))
 	
 	_center_and_scale_board()
 
 	# Place pieces based on level_data
-	for piece_data: Dictionary in level_data["pieces"]:
+	for piece_data: Dictionary[Variant, Variant] in level_data["pieces"]:
 		var piece_type: String = piece_data["type"]
 		var piece_damaged: bool = false
-		var piece_lives: int = 0
+		var piece_lives: int = 99
 		if piece_data["damaged"]:
 			piece_damaged = true
 			piece_lives = piece_data["lives"]
@@ -328,12 +339,13 @@ func reset_board() -> void:
 				
 func load_current_level() -> void:
 	reset_board()
-	var level_data := level_manager.load_level("level_" + str(current_level))
-	if current_level == 2:
-		$TutorialMusic.play()
-	if current_level == 7:
-		$TutorialMusic.stop()
-		$GameMusic.play()
+	var level_data: Dictionary[Variant, Variant] = level_manager.load_level("level_" + str(current_level))
+	#print(level_data)
+	#if current_level == 2:
+		#tutorial_music.play()
+	#if current_level == 7:
+		#tutorial_music.stop()
+		#game_music.play()
 	if level_data.size() > 0:
 		setup_level(level_data)
 	else:
@@ -373,29 +385,36 @@ func _center_and_scale_board() -> void:
 	position.y = (get_viewport_rect().size.y - scaled_board_size) / 2 + top_margin
 
 
-func display_hints() -> void:
+func script_events() -> void:
 	if current_level == 1:
-		await(display_hint(2, 2, "Use your mouse to move a pawn to the other side", hint_label, 3))
+		await(display_hint(1, 2, "Use your mouse to move a pawn to the other side", hint_label, 3))
 		#await(display_hint(1, 3, "Take a pawn to the other side", hint_label, 2))
+	if current_level == 2:
+		#await get_tree().create_timer(0.1).timeout
+		tutorial_music.play()
 	if current_level == 3:
-		await(display_hint(2, 3, "Use other pieces strategically to aid your pawn", hint_label, 3))
-	if current_level == 6:
-		await(display_hint(4, 2, "Make the right kind of sacrifice", hint_label, 2))
+		await(display_hint(1, 3, "Use other pieces strategically to aid your pawn", hint_label, 3))
+	#if current_level == 6:
+		#await(display_hint(4, 2, "Make the right kind of sacrifice", hint_label, 2))
 	if current_level == 7:
 		await(display_hint(2, 3, "Numbered pieces have a limited number of turns left", hint_label, 3))
+	if current_level == 8:
+		#await get_tree().create_timer(0.1).timeout
+		tutorial_music.stop()
+		game_music.play()
 		
 	
 	
 func display_hint(start_delay: int, end_delay: int, text_content: String, label: Node, typing_speed: float) -> void:
 	await get_tree().create_timer(start_delay).timeout
-	hint_label.text = text_content
-	$UISound.stream.loop = true
-	$UISound.play()
 	var tween: Tween = create_tween()
+	hint_label.text = text_content
+	#ui_sound_loop.stream.loop = true
+	ui_sound_loop.play()
 	tween.tween_property(label, "visible_characters", text_content.length(), typing_speed)
 	await get_tree().create_timer(typing_speed).timeout
-	$UISound.stream.loop = false
-	$UISound.stop()
+	#ui_sound_loop.stream.loop = false
+	ui_sound_loop.stop()
 	await get_tree().create_timer(end_delay).timeout
 	hint_label.visible_characters = 0
 	hint_label.text = ""
