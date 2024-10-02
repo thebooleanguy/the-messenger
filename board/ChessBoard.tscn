@@ -13,7 +13,6 @@
 [node name="ChessBoard" type="Node2D"]
 position = Vector2(18, 0)
 script = ExtResource("1_bdnp4")
-current_level = 5
 metadata/_edit_group_ = true
 
 [node name="TutorialMusic" type="AudioStreamPlayer" parent="."]
